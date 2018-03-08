@@ -15,12 +15,21 @@ import { Link } from 'react-router-dom'
 
     render() {
 
-      const posts = this.props.posts
+      const comments = this.props.comments
 
       return (
         <div>
           
           <h1>Comments</h1>
+          <ol>
+               {comments.map((comment) => (
+
+                 <li> {comment.author}</li>
+               )
+            )}
+               
+               </ol>
+
         
 
   <Link
@@ -35,10 +44,10 @@ import { Link } from 'react-router-dom'
   }
   
 
-function mapStateToProps ({posts}) {
-  let mainPosts = Object.keys(posts).map((key)=>{ return posts[key]})
+function mapStateToProps ({comments}) {
+  let mainPosts = Object.keys(comments).map((key)=>{ return comments[key]})
   mainPosts.sort(sortBy('timestamp'))
-  return {"posts":mainPosts}
+  return {"comments":mainPosts}
 }
 
 /*

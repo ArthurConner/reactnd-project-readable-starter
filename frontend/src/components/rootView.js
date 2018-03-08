@@ -23,6 +23,14 @@ import sortBy from 'sort-by'
         <div>
           
            <h1>Posts</h1>
+           <ol>
+               {posts.map((post) => (
+
+                 <li> {post.title}</li>
+               )
+            )}
+               
+               </ol>
            <Link
               to="/comments"
               className="add-contact"
