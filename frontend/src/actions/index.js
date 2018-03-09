@@ -1,14 +1,114 @@
 
-export const LOAD_POSTS = 'LOAD_POSTS'
+import axios from 'axios'
+export const LOAD_SERVER = 'LOAD_SERVER'
+export const UPDATE_COMMENT = 'UPDATE_COMMENT'
+const api = "http://localhost:3001"
 
+
+// Generate a unique token for storing your bookshelf data on the backend server.
+let token = localStorage.token
+if (!token)
+  token = localStorage.token = Math.random().toString(36).substr(-8)
+
+const headers = {
+  'Accept': 'application/json',
+  'Authorization': token
+}
 
 
 export function loadPosts() {
 
-  return {
-    type: LOAD_POSTS,
-    posts: []
+  return (dispatch) => {
+
+    const postsurl = {
+      method: 'get',
+      url: `${api}/posts`,
+      headers: {
+        ...headers,
+      }
+    }
+
+
+    const caturl = {
+      method: 'get',
+      url: `${api}/categories`,
+      headers: {
+        ...headers,
+      }
+    }
+
+    axios.all([axios(postsurl), axios(caturl)])
+      .then(function(response) {
+
+        const posts = response[0].data.reduce((acc, post) => {
+          acc[post.id] = post
+          return acc
+        }, {})
+
+        const categories = response[1].data.categories
+
+        const action = {
+          type: LOAD_SERVER,
+          posts,
+          categories
+        }
+
+        dispatch(action)
+
+      })
+      .catch(function(error) {
+        console.log("we have a loadServer error")
+        console.log(error);
+      });
+
   }
+
+}
+
+
+
+export function fetchPost({postid}) {
+
+  return (dispatch) => {
+
+    const postsurl = {
+      method: 'get',
+      url: `${api}/posts/${postid}/comments`,
+      headers: {
+        ...headers,
+      }
+    }
+
+
+
+
+    axios(postsurl)
+      .then(function(response) {
+
+        console.log("now have response")
+        console.log(response)
+
+        const comments = response.data
+        const action = {
+          type: UPDATE_COMMENT,
+          comments
+        }
+
+        console.log("going to do action")
+        dispatch(action)
+
+      })
+      .catch(function(error) {
+        console.log("we have a fetchPost error")
+        console.log(error);
+      });
+
+
+
+  }
+
+
+
 }
 
 

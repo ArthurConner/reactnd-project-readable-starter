@@ -10,6 +10,7 @@ import sortBy from 'sort-by'
 
 
 
+
 class RootView extends React.Component {
 
 
@@ -18,6 +19,13 @@ class RootView extends React.Component {
 
     const posts = this.props.posts
 
+    console.log("we have posts")
+    const foo = posts.map((post) => {
+      console.log(post)
+      return post
+    })
+
+    console.log(foo)
 
     return (
       <div>
@@ -26,21 +34,29 @@ class RootView extends React.Component {
            <ol>
                {posts.map((post) => {
         let link = "/post/" + post.id
+        let commentLink = "/post/comments/" + post.id
         return (
 
           <li>  <Link
           to={link}
           className="add-contact"
-          >{post.title}</Link> </li>
+          >{post.title}</Link>
+            comments  
+          
+
+           <Link
+          to={commentLink}
+          className="add-contact"
+          >{post.commentCount}</Link>
+
+          
+           </li>
         )
       }
       )}
                
                </ol>
-           <Link
-      to="/comments"
-      className="add-contact"
-      >To Comments</Link>
+
 
         </div>
     )
@@ -50,12 +66,20 @@ class RootView extends React.Component {
 
 
 function mapStateToProps({posts}) {
-  let mainPosts = Object.keys(posts).map((key) => {
-    return posts[key]
-  })
-  mainPosts.sort(sortBy('timestamp'))
+
+  const keys = Object.keys(posts)
+
+  if (keys.length > 0) {
+    let mainPosts = Object.keys(posts).map((key) => {
+      return posts[key]
+    })
+    mainPosts.sort(sortBy('timestamp'))
+    return {
+      "posts": mainPosts
+    }
+  }
   return {
-    "posts": mainPosts
+    "posts": []
   }
 }
 

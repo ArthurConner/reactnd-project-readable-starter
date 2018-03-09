@@ -30,8 +30,8 @@ class BooksApp extends React.Component {
           <Route exact path='/' render={() => (
         <MainView  />
       )}/>
-          <Route path='/comments' render={() => (
-        <CommentView  />
+          <Route exact path='/post/comments/:id' render={({history, match}) => (
+        <CommentView  postid={match.params.id} />
       )}/>
 
             <Route exact path="/post/:id" render={({history, match}) => (
