@@ -1,7 +1,7 @@
 import React from 'react'
 
 import '../styles/App.css'
-import {Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -10,49 +10,53 @@ import sortBy from 'sort-by'
 
 
 
-  class RootView extends React.Component {
+class RootView extends React.Component {
 
 
 
-    render() {
+  render() {
 
-      const posts = this.props.posts
+    const posts = this.props.posts
 
 
-      return (
-        <div>
+    return (
+      <div>
           
            <h1>Posts</h1>
            <ol>
                {posts.map((post) => {
-                 let link = "/post/" + post.id
-                return (
+        let link = "/post/" + post.id
+        return (
 
-                 <li>  <Link
-                 to={link}
-                 className="add-contact"
-                 >{post.title}</Link> </li>
-               )
-              }
-            )}
+          <li>  <Link
+          to={link}
+          className="add-contact"
+          >{post.title}</Link> </li>
+        )
+      }
+      )}
                
                </ol>
            <Link
-              to="/comments"
-              className="add-contact"
-              >To Comments</Link>
+      to="/comments"
+      className="add-contact"
+      >To Comments</Link>
 
         </div>
-      )
-    }
-
+    )
   }
-  
 
-function mapStateToProps ({posts}) {
-  let mainPosts = Object.keys(posts).map((key)=>{ return posts[key]})
+}
+
+
+function mapStateToProps({posts}) {
+  let mainPosts = Object.keys(posts).map((key) => {
+    return posts[key]
+  })
   mainPosts.sort(sortBy('timestamp'))
-  return {"posts":mainPosts}
+  return {
+    "posts": mainPosts
+  }
 }
 
 /*
