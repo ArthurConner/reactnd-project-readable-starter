@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../App.css'
+import '../styles/App.css'
 import {Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
@@ -24,10 +24,16 @@ import sortBy from 'sort-by'
           
            <h1>Posts</h1>
            <ol>
-               {posts.map((post) => (
+               {posts.map((post) => {
+                 let link = "/post/" + post.id
+                return (
 
-                 <li> {post.title}</li>
+                 <li>  <Link
+                 to={link}
+                 className="add-contact"
+                 >{post.title}</Link> </li>
                )
+              }
             )}
                
                </ol>

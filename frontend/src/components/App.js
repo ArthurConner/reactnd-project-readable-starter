@@ -1,9 +1,11 @@
 import React from 'react'
 
-import '../App.css'
+import '../styles/App.css'
 import {Switch, Route } from 'react-router-dom'
 import  MainView  from './rootView.js'
 import CommentView  from './commentView.js'
+import PostDetailView from "./PostDetailView"
+
 import { connect } from 'react-redux'
 import { loadPosts } from '../actions'
 import { withRouter } from 'react-router'
@@ -23,7 +25,7 @@ import { withRouter } from 'react-router'
    
       return (
         <div>
-          
+        
           <Switch>
           <Route exact path='/' render={() => (
           <MainView  />
@@ -31,6 +33,11 @@ import { withRouter } from 'react-router'
           <Route path='/comments' render={() => (
             <CommentView  />
           )}/>
+
+            <Route exact path="/post/:id" render={({history,match})=>(
+        <PostDetailView id={match.params.id} />
+      )}/>
+
           </Switch>
         
 
