@@ -1,6 +1,6 @@
 
 
-import { LOAD_SERVER } from '../actions'
+import { LOAD_SERVER, UPDATE_COMMENT } from '../actions'
 
 const initialTestCalendarState = {
 
@@ -60,9 +60,7 @@ const initialRedState = {
   posts: {
 
   },
-  comments: {
 
-  },
   categories: []
 
 }
@@ -76,11 +74,39 @@ function bookReducer(state = initialRedState, action) {
     case LOAD_SERVER:
       const {posts, categories} = action
 
+      const nextPost = posts.map((p)=>{
+        p["comments"] = []
+        return p
+      })
+
       return {
         ...state,
-        posts,
+        "posts":nextPost,
         categories
       }
+
+    case UPDATE_COMMENT:
+      const {comments} = action
+      
+      let p = state.posts[postid]
+      if (p){
+        const nextP = {...p,
+        comments
+        }
+        return {
+          ...state,
+          "posts":{
+            ...posts,
+            postid:nextP
+            
+          }
+          
+        }
+
+      }
+
+      return state
+
 
 
     default:

@@ -67,7 +67,7 @@ export function loadPosts() {
 
 
 
-export function fetchPost({postid}) {
+export function fetchPostComments({postid}) {
 
   return (dispatch) => {
 
@@ -91,6 +91,7 @@ export function fetchPost({postid}) {
         const comments = response.data
         const action = {
           type: UPDATE_COMMENT,
+          postid,
           comments
         }
 

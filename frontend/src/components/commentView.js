@@ -6,16 +6,22 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import sortBy from 'sort-by'
 import { Link } from 'react-router-dom'
-
+import { fetchPostComments } from '../actions'
 
 class RootView extends React.Component {
 
 
 
+  componentDidMount() {
+    this.props.fetchPostComments({postid:this.props.postid})
+  }
+
 
   render() {
 
     const comments = this.props.comments
+
+    const {postid, post} = this.props;
 
     return (
       <div>
@@ -42,23 +48,27 @@ class RootView extends React.Component {
 }
 
 
-function mapStateToProps({comments}) {
-  let mainPosts = Object.keys(comments).map((key) => {
-    return comments[key]
-  })
-  mainPosts.sort(sortBy('timestamp'))
+function mapStateToProps({posts}, ownProps) {
+  let comments = posts[ownProps.postid].comments
+  if (comments) {
+    return {
+      comments
+    }
+  }
+
+
   return {
-    "comments": mainPosts
+    "comments": []
   }
 }
 
-/*
+
 function mapDispatchToProps (dispatch) {
     return {
-      loadBookShelf: (data) => dispatch(loadBookShelf(data))
+      fetchPostComments: (data) => fetchPostComments(loadPosts(data))
     }
   }
-  */
+ 
 
 
 

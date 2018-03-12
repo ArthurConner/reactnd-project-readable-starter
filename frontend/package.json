@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "eslint-plugin-react": "^7.7.0",
     "grunt": "^1.0.2",
     "grunt-esformatter": "^1.2.0",
     "prop-types": "^15.6.1",
