@@ -74,19 +74,21 @@ function bookReducer(state = initialRedState, action) {
     case LOAD_SERVER:
       const {posts, categories} = action
 
+      /*
       const nextPost = posts.map((p)=>{
         p["comments"] = []
         return p
       })
+      */
 
       return {
         ...state,
-        "posts":nextPost,
+        posts,
         categories
       }
 
     case UPDATE_COMMENT:
-      const {comments} = action
+      const {comments,postid} = action
       
       let p = state.posts[postid]
       if (p){

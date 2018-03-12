@@ -13,7 +13,14 @@ class RootView extends React.Component {
 
 
   componentDidMount() {
+    console.log("about to do prop")
+  
+    console.log(this.props.fetchPostComments)
+    if (this.props.fetchPostComments) {
     this.props.fetchPostComments({postid:this.props.postid})
+    } else {
+      console.log("no fetch yet")
+    }
   }
 
 
@@ -49,6 +56,9 @@ class RootView extends React.Component {
 
 
 function mapStateToProps({posts}, ownProps) {
+  console.log("this is our post id")
+  console.log(posts[ownProps.postid])
+
   let comments = posts[ownProps.postid].comments
   if (comments) {
     return {
@@ -65,7 +75,9 @@ function mapStateToProps({posts}, ownProps) {
 
 function mapDispatchToProps (dispatch) {
     return {
-      fetchPostComments: (data) => fetchPostComments(loadPosts(data))
+
+      
+      fetchPostComments: (data) => dispatch(fetchPostComments(data))
     }
   }
  
