@@ -81,31 +81,62 @@ function bookReducer(state = initialRedState, action) {
       })
       */
 
+      const nextPosts = posts.reduce((acc, post) => {
+        post.comments = {}
+        acc[post.id] = post
+
+
+        if (post.id in state.posts) {
+          const oldcomments = state.posts[postid].comments
+          post.comments = {
+            ...oldcomments
+          }
+
+        }
+        return acc
+      }, {})
+
       return {
         ...state,
-        posts,
+        "posts": nextPosts,
         categories
       }
 
     case UPDATE_COMMENT:
-      const {comments,postid} = action
-      
+      const {comments, postid} = action
+
+      const nextComments = comments.reduce((acc, comment) => {
+        acc[comment.id] = comment
+        return acc
+      }, {})
+
       let p = state.posts[postid]
-      if (p){
-        const nextP = {...p,
-        comments
+      let nextP
+
+      if (p) {
+        nextP = {
+          ...p,
+          "comments": nextComments
         }
-        return {
-          ...state,
-          "posts":{
-            ...posts,
-            postid:nextP
-            
-          }
-          
+      } else {
+        nextP = {
+          "comments": nextComments
         }
+      }
+
+      let retPosts = {
+        ...state.posts
+      }
+      retPosts[postid] = nextP
+
+      // console.log("with",postid,"reducing posts",state.posts,"to something likle",retPosts)
+      return {
+        ...state,
+        "posts": retPosts
 
       }
+
+
 
       return state
 

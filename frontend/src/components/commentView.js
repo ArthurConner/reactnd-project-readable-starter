@@ -13,14 +13,10 @@ class RootView extends React.Component {
 
 
   componentDidMount() {
-    console.log("about to do prop")
-  
-    console.log(this.props.fetchPostComments)
-    if (this.props.fetchPostComments) {
-    this.props.fetchPostComments({postid:this.props.postid})
-    } else {
-      console.log("no fetch yet")
-    }
+    console.log("did monunt comments")
+    this.props.fetchPostComments({
+      postid: this.props.postid
+    })
   }
 
 
@@ -57,15 +53,41 @@ class RootView extends React.Component {
 
 function mapStateToProps({posts}, ownProps) {
   console.log("this is our post id")
+  if (!(ownProps.postid)) {
+    console.log("do not have a postid")
+    console.log(posts)
+    return {
+      comments: []
+    }
+  }
   console.log(posts[ownProps.postid])
 
-  let comments = posts[ownProps.postid].comments
-  if (comments) {
+
+  if (!(posts[ownProps.postid])) {
+    console.log("do not have a posts[ownProps.postid]")
+    console.log(posts)
     return {
-      comments
+      comments: []
     }
   }
 
+  const ourPost = posts[ownProps.postid]
+  console.log("our post", ourPost)
+  const comments = ourPost.comments
+  const keys = Object.keys(comments)
+
+  console.log("these are our comments")
+  console.log(comments)
+
+  if (keys.length > 0) {
+    let mainPosts = Object.keys(comments).map((key) => {
+      return comments[key]
+    })
+    mainPosts.sort(sortBy('timestamp'))
+    return {
+      "comments": mainPosts
+    }
+  }
 
   return {
     "comments": []
@@ -73,17 +95,19 @@ function mapStateToProps({posts}, ownProps) {
 }
 
 
-function mapDispatchToProps (dispatch) {
-    return {
+function mapDispatchToProps(dispatch) {
+  console.log("mapping fetch")
+  return {
 
-      
-      fetchPostComments: (data) => dispatch(fetchPostComments(data))
-    }
+
+
+    fetchPostComments: (data) => dispatch(fetchPostComments(data))
   }
- 
+}
+
 
 
 
 export default withRouter(connect(
-  mapStateToProps, null
+  mapStateToProps, mapDispatchToProps
 )(RootView))

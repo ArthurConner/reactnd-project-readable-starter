@@ -40,10 +40,7 @@ export function loadPosts() {
     axios.all([axios(postsurl), axios(caturl)])
       .then(function(response) {
 
-        const posts = response[0].data.reduce((acc, post) => {
-          acc[post.id] = post
-          return acc
-        }, {})
+        const posts = response[0].data
 
         const categories = response[1].data.categories
 
@@ -95,7 +92,7 @@ export function fetchPostComments({postid}) {
           comments
         }
 
-        console.log("going to do action")
+        console.log("going to do fetchPostComments", action)
         dispatch(action)
 
       })
