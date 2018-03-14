@@ -1,6 +1,7 @@
 import React from 'react'
 
 import '../styles/App.css'
+import MenuView from "./menu.js"
 
 import { connect } from 'react-redux'
 
@@ -28,7 +29,7 @@ class RootView extends React.Component {
 
     return (
       <div>
-          
+          <MenuView/>
           <h1>Comments</h1>
           <ol>
                {
@@ -39,10 +40,6 @@ class RootView extends React.Component {
       }      
         </ol>
 
-  <Link
-      to="/"
-      className="add-contact"
-      >To Posts</Link>
 
         </div>
     )

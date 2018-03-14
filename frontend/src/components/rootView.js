@@ -1,11 +1,13 @@
 import React from 'react'
-import '../styles/App.css'
+import '../styles/ui/semantic.min.css'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import sortBy from 'sort-by'
+import { Card, Icon, Image } from 'semantic-ui-react'
 
+import sortBy from 'sort-by'
+import MenuView from "./menu.js"
 
 
 
@@ -27,15 +29,15 @@ class RootView extends React.Component {
 
     return (
       <div>
-          
-           <h1>Posts</h1>
-           <ol>
+      <MenuView/>
+     
+           
                {posts.map((post) => {
         let link = "/post/" + post.id
         let commentLink = "/post/comments/" + post.id
         return (
 
-          <li>  <Link
+          <div class="ui raised segment">  <Link
           to={link}
           className="add-contact"
           >{post.title}</Link>
@@ -48,14 +50,12 @@ class RootView extends React.Component {
           >{post.commentCount}</Link>
 
           
-           </li>
+           </div>
         )
       }
       )}
                
-               </ol>
-
-
+    
         </div>
     )
   }
