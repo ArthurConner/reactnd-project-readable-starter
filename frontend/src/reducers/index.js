@@ -1,6 +1,6 @@
 
 
-import { LOAD_SERVER, UPDATE_COMMENT } from '../actions'
+import { LOAD_SERVER, UPDATE_POST } from '../actions'
 
 const initialTestCalendarState = {
 
@@ -61,86 +61,92 @@ const initialRedState = {
 
   },
 
-  categories: []
+  categories: {}
 
 }
 
 
-function bookReducer(state = initialRedState, action) {
+function makeComments({state, post, comments}) {
+
+  if (comments) {
+    const nextComments = comments.reduce((acc, comment) => {
+      acc[comment.id] = comment
+      return acc
+    }, {})
+
+    return {
+      ...post,
+      "comments": nextComments
+    }
+  }
+
+  if (post.id in state.posts) {
+    const oldcomments = state.posts[post.id].comments
+
+    return {
+      ...post,
+      "comments": oldcomments
+    }
+
+  }
+
+  return {
+    ...post,
+    "comments": {}
+  }
+}
 
 
+
+function reditReducer(state = initialRedState, action) {
 
   switch (action.type) {
     case LOAD_SERVER:
       const {posts, categories} = action
 
-      /*
-      const nextPost = posts.map((p)=>{
-        p["comments"] = []
-        return p
-      })
-      */
-
-      const nextPosts = posts.reduce((acc, post) => {
-        post.comments = {}
+      const nextPosts = posts.reduce((acc, p) => {
+        const post = makeComments({
+          state,
+          post: p,
+          comments: null
+        })
         acc[post.id] = post
+        return acc
+      }, {})
 
-
-        if (post.id in state.posts) {
-          const oldcomments = state.posts[postid].comments
-          post.comments = {
-            ...oldcomments
-          }
-
-        }
+      const nextCategories = categories.reduce((acc, cat) => {
+        acc[cat] = {}
         return acc
       }, {})
 
       return {
         ...state,
         "posts": nextPosts,
-        categories
+        "categories": {
+          ...nextCategories,
+          ...state.categories
+        }
+
       }
 
-    case UPDATE_COMMENT:
-      const {comments, postid} = action
+    case UPDATE_POST:
+      const {comments, post} = action
 
-      const nextComments = comments.reduce((acc, comment) => {
-        acc[comment.id] = comment
-        return acc
-      }, {})
-
-      let p = state.posts[postid]
-      let nextP
-
-      if (p) {
-        nextP = {
-          ...p,
-          "comments": nextComments
-        }
-      } else {
-        nextP = {
-          "comments": nextComments
-        }
-      }
-
+      let nextP = makeComments({
+        state,
+        post,
+        comments
+      })
       let retPosts = {
         ...state.posts
       }
-      retPosts[postid] = nextP
-
-      // console.log("with",postid,"reducing posts",state.posts,"to something likle",retPosts)
+      retPosts[post.id] = nextP
+      //console.log("got posts",retPosts)
       return {
         ...state,
         "posts": retPosts
 
       }
-
-
-
-      return state
-
-
 
     default:
       return state
@@ -150,4 +156,4 @@ function bookReducer(state = initialRedState, action) {
 
 
 
-export default bookReducer
+export default reditReducer

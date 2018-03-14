@@ -1,20 +1,20 @@
 import React from 'react'
 
 import '../styles/App.css'
-import { Switch, Route } from 'react-router-dom'
+
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+
 import sortBy from 'sort-by'
 import { Link } from 'react-router-dom'
-import { fetchPostComments } from '../actions'
+import { fetchPost } from '../actions'
 
 class RootView extends React.Component {
 
 
 
   componentDidMount() {
-    console.log("did monunt comments")
-    this.props.fetchPostComments({
+    //console.log("did monunt comments")
+    this.props.fetchPost({
       postid: this.props.postid
     })
   }
@@ -24,7 +24,7 @@ class RootView extends React.Component {
 
     const comments = this.props.comments
 
-    const {postid, post} = this.props;
+    // const {postid, post} = this.props;
 
     return (
       <div>
@@ -52,32 +52,32 @@ class RootView extends React.Component {
 
 
 function mapStateToProps({posts}, ownProps) {
-  console.log("this is our post id")
+  // console.log("this is our post id")
   if (!(ownProps.postid)) {
-    console.log("do not have a postid")
-    console.log(posts)
+    // console.log("do not have a postid")
+    // console.log(posts)
     return {
       comments: []
     }
   }
-  console.log(posts[ownProps.postid])
+  //console.log(posts[ownProps.postid])
 
 
   if (!(posts[ownProps.postid])) {
-    console.log("do not have a posts[ownProps.postid]")
-    console.log(posts)
+    // console.log("do not have a posts[ownProps.postid]")
+    //console.log(posts)
     return {
       comments: []
     }
   }
 
   const ourPost = posts[ownProps.postid]
-  console.log("our post", ourPost)
+  //console.log("our post", ourPost)
   const comments = ourPost.comments
   const keys = Object.keys(comments)
 
-  console.log("these are our comments")
-  console.log(comments)
+  //console.log("these are our comments")
+  //console.log(comments)
 
   if (keys.length > 0) {
     let mainPosts = Object.keys(comments).map((key) => {
@@ -98,16 +98,13 @@ function mapStateToProps({posts}, ownProps) {
 function mapDispatchToProps(dispatch) {
   console.log("mapping fetch")
   return {
-
-
-
-    fetchPostComments: (data) => dispatch(fetchPostComments(data))
+    fetchPost: (data) => dispatch(fetchPost(data))
   }
 }
 
 
 
 
-export default withRouter(connect(
+export default connect(
   mapStateToProps, mapDispatchToProps
-)(RootView))
+)(RootView)

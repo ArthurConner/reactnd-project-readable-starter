@@ -1,9 +1,9 @@
 import React from 'react'
 
 import '../styles/App.css'
-import { Switch, Route } from 'react-router-dom'
+
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+
 import { Link } from 'react-router-dom'
 
 import sortBy from 'sort-by'
@@ -58,6 +58,6 @@ function mapDispatchToProps (dispatch) {
 
 
 
-export default withRouter(connect(
+export default connect(
   mapStateToProps, null
-)(RootView))
+)(RootView)

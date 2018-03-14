@@ -1,9 +1,7 @@
 import React from 'react'
-
 import '../styles/App.css'
-import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
+
 import { Link } from 'react-router-dom'
 
 import sortBy from 'sort-by'
@@ -19,13 +17,13 @@ class RootView extends React.Component {
 
     const posts = this.props.posts
 
-    console.log("we have posts")
-    const foo = posts.map((post) => {
-      console.log(post)
-      return post
-    })
+    // console.log("we have posts")
+    // const foo = posts.map((post) => {
+    // console.log(post)
+    //  return post
+    //  })
 
-    console.log(foo)
+    //console.log(foo)
 
     return (
       <div>
@@ -93,6 +91,6 @@ function mapDispatchToProps (dispatch) {
 
 
 
-export default withRouter(connect(
+export default connect(
   mapStateToProps, null
-)(RootView))
+)(RootView)

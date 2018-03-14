@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 export const LOAD_SERVER = 'LOAD_SERVER'
-export const UPDATE_COMMENT = 'UPDATE_COMMENT'
+export const UPDATE_POST = 'UPDATE_POST'
 const api = "http://localhost:3001"
 
 
@@ -28,7 +28,6 @@ export function loadPosts() {
       }
     }
 
-
     const caturl = {
       method: 'get',
       url: `${api}/categories`,
@@ -41,7 +40,6 @@ export function loadPosts() {
       .then(function(response) {
 
         const posts = response[0].data
-
         const categories = response[1].data.categories
 
         const action = {
@@ -64,11 +62,11 @@ export function loadPosts() {
 
 
 
-export function fetchPostComments({postid}) {
+export function fetchPost({postid}) {
 
   return (dispatch) => {
 
-    const postsurl = {
+    const commenturl = {
       method: 'get',
       url: `${api}/posts/${postid}/comments`,
       headers: {
@@ -77,22 +75,25 @@ export function fetchPostComments({postid}) {
     }
 
 
+    const postsurl = {
+      method: 'get',
+      url: `${api}/posts/${postid}`,
+      headers: {
+        ...headers,
+      }
+    }
 
-
-    axios(postsurl)
+    axios.all([axios(postsurl), axios(commenturl)])
       .then(function(response) {
 
-        console.log("now have response")
-        console.log(response)
-
-        const comments = response.data
+        const post = response[0].data
+        const comments = response[1].data
         const action = {
-          type: UPDATE_COMMENT,
-          postid,
+          type: UPDATE_POST,
+          post,
           comments
         }
 
-        console.log("going to do fetchPostComments", action)
         dispatch(action)
 
       })
@@ -101,74 +102,7 @@ export function fetchPostComments({postid}) {
         console.log(error);
       });
 
-
-
   }
-
-
 
 }
 
-
-
-
-
-/*
-export function moveBook(x) {
-  const { book, shelf } = x
-
-  return (dispatch) => {
-
-    BooksAPI.update(book, shelf).then((result) => {
-
-      dispatch({
-        type: MOVE_BOOK,
-        book,
-        shelf,
-      })
-    })
-  }
-}
-
-
-export function searchTitle({ query }) {
-
-  return (dispatch) => {
-    
-    BooksAPI.search(query).then((searchResults) => {
-
-      //console.log("got search result")
-      //console.log(searchResults)
-
-      if (searchResults instanceof Array) {
-        dispatch({
-          type: SEARCH_TITLE,
-          query,
-          searchResults
-        })
-      }
-      else {
-        console.log("We have an error with search")
- 
-      }
-    })
-  }
-}
-
-export function loadBookShelf() {
-
-  return (dispatch) => {
-
-    BooksAPI.getAll().then((books) => {
-      dispatch({
-        type: LOAD_BOOKSHELF,
-        books,
-      })
-
-    })
-  }
-
-
-}
-
-*/
