@@ -29,8 +29,8 @@ class RootView extends React.Component {
 
     return (
       <div>
-          <MenuView/>
-          <h1>Comments</h1>
+    
+     
           <ol>
                {
       comments.map((comment) => (

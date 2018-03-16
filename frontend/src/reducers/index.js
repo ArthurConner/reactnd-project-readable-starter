@@ -66,6 +66,8 @@ const initialRedState = {
 }
 
 
+
+
 function makeComments({state, post, comments}) {
 
   if (comments) {
@@ -98,6 +100,38 @@ function makeComments({state, post, comments}) {
 
 
 
+function makeCategory({state, category, posts}) {
+
+  if (posts) {
+    const nextposts = posts.reduce((acc, comment) => {
+      acc[comment.id] = comment
+      return acc
+    }, {})
+
+    return {
+      ...category,
+      "posts": nextposts
+    }
+  }
+
+  if (category.path in state.categories) {
+    const oldcomments = state.categories[category.path].posts
+
+    return {
+      ...category,
+      "posts": oldcomments
+    }
+
+  }
+
+  return {
+    ...category,
+    "posts": {}
+  }
+}
+
+
+
 function reditReducer(state = initialRedState, action) {
 
   switch (action.type) {
@@ -114,18 +148,26 @@ function reditReducer(state = initialRedState, action) {
         return acc
       }, {})
 
-      const nextCategories = categories.reduce((acc, cat) => {
-        acc[cat] = {}
+      const nextCategories = categories.reduce((acc, p) => {
+
+        const cat = makeCategory({
+          state,
+          category: p,
+          posts: null
+        })
+
+        acc[cat.path] = cat
         return acc
       }, {})
+
+
+
+      console.log("reducing cats", nextCategories)
 
       return {
         ...state,
         "posts": nextPosts,
-        "categories": {
-          ...nextCategories,
-          ...state.categories
-        }
+        "categories": nextCategories
 
       }
 

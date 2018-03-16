@@ -31,13 +31,14 @@ class BooksApp extends React.Component {
         <MainView  />
       )}/>
           <Route exact path='/post/comments/:id' render={({history, match}) => (
-        <CommentView  postid={match.params.id} />
+        <PostDetailView  postid={match.params.id} />
       )}/>
 
-            <Route exact path="/post/:id" render={({history, match}) => (
-        <PostDetailView postid={match.params.id} />
+       <Route exact path='/category/:id' render={({history, match}) => (
+        <MainView  category={match.params.id} />
       )}/>
 
+         
           </Switch>
         
 
@@ -47,6 +48,14 @@ class BooksApp extends React.Component {
 
 }
 
+
+/*
+   <Route exact path="/post/:id" render={({history, match}) => (
+        <PostDetailView postid={match.params.id} />
+      )}/>
+
+
+      */
 /*
 
 function mapStateToProps ({books,searchResults,query}) {

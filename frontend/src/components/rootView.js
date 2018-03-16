@@ -4,58 +4,131 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Header, List, Dropdown } from 'semantic-ui-react'
 
 import sortBy from 'sort-by'
 import MenuView from "./menu.js"
+
+import PostView from "./PostView"
+import { iconForCategory, colorForCategory } from "./categoryIcon"
+
 
 
 
 class RootView extends React.Component {
 
+  state = {
+    orderBy: "timestamp"
+  }
 
+
+  /*
+    title: 'Learn Redux in 10 minutes!',
+    body: 'Just kidding. It takes more than 10 minutes to learn technology.',
+    author: 'thingone',
+    category: 'redux',
+    voteScore: -5,
+    deleted: false,
+    commentCount: 0
+  */
+
+  shiftItem = (event) => {
+    // let posts = [...this.props.posts]
+    const orderBy = event.target.value
+    // posts.sort(sortBy(orderBy))
+    const ret = {
+      orderBy
+    }
+
+    console.log("changing order", ret)
+    this.setState(ret)
+  }
 
   render() {
 
-    const posts = this.props.posts
 
-    // console.log("we have posts")
-    // const foo = posts.map((post) => {
-    // console.log(post)
-    //  return post
-    //  })
+    let posts = this.props.posts
+    let orderBy = this.state.orderBy
 
-    //console.log(foo)
+    posts = [...posts]
+
+    let secName = this.props.category
+    //console.log("mainview category is",secName)
+
+    let header = ""
+    let color = {}
+
+    if (secName) {
+      if (this.state.categories) {
+
+        header = this.state.categories[secName].name
+      } else {
+        header = secName
+      }
+      color = colorForCategory({
+        cat: secName
+      })
+
+      posts = posts.filter((post) => {
+        return post.category === secName
+      })
+    }
+
+    if (posts) {
+      posts.sort(sortBy(orderBy))
+    }
+
+    const sortItems = ["timestamp", "author", "title", "voteScore", "commentCount"].map((item) => {
+
+      return {
+        key: item,
+        value: item,
+        text: item
+      }
+    })
 
     return (
-      <div>
+      <div key="Main Menu">
+      
       <MenuView/>
+      <div style = {{
+        marginTop: "10px",
+        marginLeft: "10px",
+        marginRight: "10px",
+        backgroundColor: "white"
+      }}>
+      <Header style={{
+        color
+      }}>{header}</Header>
+
+      <div style={{
+        textAlign: "right"
+      }}>
+      Order By:
      
+      <Dropdown defaultValue={orderBy} inline options={sortItems}  value={orderBy}
+
+      onChange={(event) => {
+        const orderBy = event.target.textContent
+        console.log("changing order", event.target.textContent, orderBy)
+        this.setState({
+          orderBy
+        })
+      }}
+
+      />
+      </div>
+    
+      <List>
            
                {posts.map((post) => {
-        let link = "/post/" + post.id
-        let commentLink = "/post/comments/" + post.id
-        return (
 
-          <div class="ui raised segment">  <Link
-          to={link}
-          className="add-contact"
-          >{post.title}</Link>
-            comments  
-          
+        return <PostView postid={post.id} />
 
-           <Link
-          to={commentLink}
-          className="add-contact"
-          >{post.commentCount}</Link>
-
-          
-           </div>
-        )
       }
       )}
-               
-    
+        </List> 
+        </div>
         </div>
     )
   }
@@ -63,21 +136,36 @@ class RootView extends React.Component {
 }
 
 
-function mapStateToProps({posts}) {
+function mapStateToProps({posts, categories} ,ownProps) {
 
   const keys = Object.keys(posts)
+
+
+
+
+  if (!(categories)) {
+    categories = {}
+  }
+
+  let catKeys = Object.keys(categories)
+  catKeys.sort()
+
 
   if (keys.length > 0) {
     let mainPosts = Object.keys(posts).map((key) => {
       return posts[key]
     })
-    mainPosts.sort(sortBy('timestamp'))
+
     return {
-      "posts": mainPosts
+      "posts": mainPosts,
+      categories,
+      catKeys
     }
   }
   return {
-    "posts": []
+    "posts": [],
+    categories,
+    catKeys
   }
 }
 
