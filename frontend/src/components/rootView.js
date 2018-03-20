@@ -62,9 +62,14 @@ class RootView extends React.Component {
       if (this.state.categories) {
 
         header = this.state.categories[secName].name
+        
+        
       } else {
         header = secName
       }
+
+      header = header.charAt(0).toUpperCase() + header.slice(1);
+      
       color = colorForCategory({
         cat: secName
       })

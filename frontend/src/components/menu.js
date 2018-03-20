@@ -8,6 +8,9 @@ import { connect } from 'react-redux'
 import sortBy from 'sort-by'
 
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
 
 class MenuView extends React.Component {
@@ -64,10 +67,11 @@ class MenuView extends React.Component {
         let color = colorForCategory({
           cat: cat.path
         })
+        const name = cat.name.capitalize()
 
         return <Menu.Item as ={Link} style ={{
             color
-          }}  to={catLink} >{cat.name}</Menu.Item>
+          }}  to={catLink} >{name}</Menu.Item>
       })
       }
 
