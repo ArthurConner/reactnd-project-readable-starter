@@ -88,6 +88,7 @@ function vote (token, id, option) {
   return new Promise((res) => {
     let posts = getData(token)
     post = posts[id]
+	console.log("voiting had option",option)
     switch(option) {
         case "upVote":
             post.voteScore = post.voteScore + 1

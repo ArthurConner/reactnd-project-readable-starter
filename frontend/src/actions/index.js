@@ -12,6 +12,7 @@ if (!token)
 
 const headers = {
   'Accept': 'application/json',
+  'Content-Type': 'application/json',
   'Authorization': token
 }
 
@@ -101,6 +102,77 @@ export function fetchPost({postid}) {
         console.log("we have a fetchPost error")
         console.log(error);
       });
+
+  }
+
+}
+
+export function changePostVote({post, direction}) {
+
+  const postid = post.id
+
+  return (dispatch) => {
+    //console.log("changing post vote",postid)
+    let nextP = {
+      ...post
+    }
+
+    let nextV = post.voteScore
+    let data
+
+    if (direction) {
+      nextV += 1
+      data = {
+        option: 'upVote'
+      }
+    } else {
+      nextV -= 1
+      data = {
+        option: 'downVote'
+      }
+    }
+
+    nextP["voteScore"] = nextV
+
+    const retAction = {
+      type: UPDATE_POST,
+      post,
+      isError: true
+    }
+
+    dispatch({
+      type: UPDATE_POST,
+      post: nextP
+
+    })
+
+    const postsurl = {
+      method: 'post',
+      url: `${api}/posts/${postid}`,
+      headers: {
+        ...headers,
+      },
+      data
+    }
+
+    console.log("vote posting", postsurl)
+
+    axios(postsurl).then(function(response) {
+
+      const back = response.data
+      const retAction = {
+        type: UPDATE_POST,
+        post: back,
+        isError: true
+
+      }
+      dispatch(retAction)
+
+    }).catch(function(error) {
+      console.log("we have a vote error")
+      console.log(error);
+      dispatch(retAction)
+    });
 
   }
 

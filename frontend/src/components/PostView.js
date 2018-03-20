@@ -7,12 +7,12 @@ import '../styles/App.css'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
-import { Item, Header, ItemContent, ItemDescription, Icon, ButtonGroup, Button } from 'semantic-ui-react'
-import { iconForCategory, colorForCategory } from "./categoryIcon"
+import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
+import { colorForCategory } from "./categoryIcon"
+import { changePostVote } from '../actions'
 
 
 function nextButton(x, postid) {
-
 
   if ('undefined' === typeof x) {
 
@@ -36,34 +36,28 @@ function nextButton(x, postid) {
     </Button>
     </Link>
   )
-
-
-
-
 }
+
+
 class PostView extends React.Component {
 
   render() {
 
-    const comments = this.props.comments
+
     const postid = this.props.postid
     const post = this.props.post
 
     const isSummary = this.props.isSummary
-    // const {postid, post} = this.props;
-    let link = "/post/" + postid
+
     let commentLink = "/post/comments/" + postid
     let cat = post.category
-    let catlink = "/post/comments/"
-    let ic = iconForCategory({
-      cat
-    })
+
     let color = colorForCategory({
       cat
     })
     let catLink = "/category/" + cat
 
-    const finalButton = nextButton(this.props.isSummary, postid)
+    const finalButton = nextButton(isSummary, postid)
 
     var d = new Date(post.timestamp).toDateString();
 
@@ -103,8 +97,27 @@ class PostView extends React.Component {
 <span style={{
         float: "right"
       }}  >
- <Button circular  size = "tiny" icon='hand point up outline' />
-     <Button circular  size = "tiny" icon='hand point down outline' />
+ <Button circular  size = "tiny" icon='hand point up outline'
+      onClick={ () => {
+        this.props.changePostVote({
+          post,
+          direction: true
+        })
+      }
+      }
+      />
+     <Button circular  size = "tiny" icon='hand point down outline'
+
+      onClick={ () => {
+        this.props.changePostVote({
+          post,
+          direction: false
+        })
+      }
+      }
+
+
+      />
    
      {finalButton}
 
@@ -113,12 +126,7 @@ class PostView extends React.Component {
 
 </div>
       </ItemDescription>
-     
-
       </ItemContent>
-
-  
-
        </Item>
       
         </div>
@@ -127,32 +135,18 @@ class PostView extends React.Component {
 
 }
 
-/*
-  
-      <ButtonGroup>
-        <Button circular color='facebook' icon="hand point up outline icon" />
-        <Button circular color='linkedin' icon="hand point down outline icon" />
-        <Button circular icon="settings" />
-      </ButtonGroup>
-      */
-
 
 
 function mapStateToProps({posts}, ownProps) {
-  // console.log("this is our post id")
+
   if (!(ownProps.postid)) {
-    // console.log("do not have a postid")
-    // console.log(posts)
     return {
       comments: []
     }
   }
-  //console.log(posts[ownProps.postid])
 
 
   if (!(posts[ownProps.postid])) {
-    // console.log("do not have a posts[ownProps.postid]")
-    //console.log(posts)
     return {
       post: {}
     }
@@ -166,9 +160,14 @@ function mapStateToProps({posts}, ownProps) {
 
 
 
+function mapDispatchToProps(dispatch) {
 
+  return {
+    changePostVote: (data) => dispatch(changePostVote(data))
+  }
+}
 
 
 export default connect(
-  mapStateToProps, null
+  mapStateToProps, mapDispatchToProps
 )(PostView)
