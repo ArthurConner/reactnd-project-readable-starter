@@ -93,7 +93,7 @@ function mapStateToProps({posts}, ownProps) {
 
 
 function mapDispatchToProps(dispatch) {
-  console.log("mapping fetch")
+
   return {
     fetchPost: (data) => dispatch(fetchPost(data))
   }

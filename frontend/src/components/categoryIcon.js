@@ -31,7 +31,7 @@ export function iconForCategory({cat}) {
   const color = colorForCategory({
     cat
   })
-  let link = "/" + cat
+  let link = "/category/" + cat
   switch (cat) {
     case "react":
       return <Link to={link}><i class="dollar sign icon" style={{

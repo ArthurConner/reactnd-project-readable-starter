@@ -33,7 +33,7 @@ class MenuView extends React.Component {
 
     let {categories, catKeys} = this.props
 
-    console.log("we have categories", catKeys)
+    //console.log("we have categories", catKeys)
     // const foo = posts.map((post) => {
     // console.log(post)
     //  return post
@@ -68,10 +68,11 @@ class MenuView extends React.Component {
           cat: cat.path
         })
         const name = cat.name.capitalize()
+        const akey = "menu_" + name
 
         return <Menu.Item as ={Link} style ={{
             color
-          }}  to={catLink} >{name}</Menu.Item>
+          }}  to={catLink} key={akey} >{name}</Menu.Item>
       })
       }
 

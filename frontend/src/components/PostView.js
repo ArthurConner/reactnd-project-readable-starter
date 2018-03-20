@@ -7,9 +7,40 @@ import '../styles/App.css'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
-import { Item, Header, ItemDescription, Icon, Menu } from 'semantic-ui-react'
+import { Item, Header, ItemContent, ItemDescription, Icon, ButtonGroup, Button } from 'semantic-ui-react'
 import { iconForCategory, colorForCategory } from "./categoryIcon"
 
+
+function nextButton(x, postid) {
+
+
+  if ('undefined' === typeof x) {
+
+    let commentLink = "/post/comments/" + postid
+
+    return (
+      <Link
+      to={commentLink}>
+     <Button circular  size = "tiny" icon='folder open outline' >
+      </Button>
+      </Link>
+    )
+  }
+
+  let editLink = "/post/edit/" + postid
+  return (
+
+    <Link
+    to={editLink}>
+   <Button circular  size = "tiny" icon='pencil alternate' >
+    </Button>
+    </Link>
+  )
+
+
+
+
+}
 class PostView extends React.Component {
 
   render() {
@@ -17,6 +48,8 @@ class PostView extends React.Component {
     const comments = this.props.comments
     const postid = this.props.postid
     const post = this.props.post
+
+    const isSummary = this.props.isSummary
     // const {postid, post} = this.props;
     let link = "/post/" + postid
     let commentLink = "/post/comments/" + postid
@@ -30,15 +63,17 @@ class PostView extends React.Component {
     })
     let catLink = "/category/" + cat
 
+    const finalButton = nextButton(this.props.isSummary, postid)
+
     var d = new Date(post.timestamp).toDateString();
 
 
     return (
 
 
-      <div key="postdetail_{postid}">
+      <div key="postdetail_{postid}_{isSummary}">
       <Item> 
-       <div class="content">
+       <ItemContent>
          <Header style ={{
         color
       }}
@@ -62,25 +97,28 @@ class PostView extends React.Component {
 
       >{post.commentCount} </Link> , score:{post.voteScore} 
       </small>
-      
-      <i class="hand point up outline icon" ></i> 
-      <i class="hand point down outline icon" ></i>
-      <div class="ui icon menu">
-  <a class="item">
-    <i class="gamepad icon"></i>
-  </a>
-  <a class="item">
-    <i class="video camera icon"></i>
-  </a>
-  <a class="item">
-    <i class="video play icon"></i>
-  </a>
-</div>
+    
  
 
+<span style={{
+        float: "right"
+      }}  >
+ <Button circular  size = "tiny" icon='hand point up outline' />
+     <Button circular  size = "tiny" icon='hand point down outline' />
+   
+     {finalButton}
 
+</span>
+<div><br/>
+
+</div>
       </ItemDescription>
-      </div>
+     
+
+      </ItemContent>
+
+  
+
        </Item>
       
         </div>
@@ -88,6 +126,16 @@ class PostView extends React.Component {
   }
 
 }
+
+/*
+  
+      <ButtonGroup>
+        <Button circular color='facebook' icon="hand point up outline icon" />
+        <Button circular color='linkedin' icon="hand point down outline icon" />
+        <Button circular icon="settings" />
+      </ButtonGroup>
+      */
+
 
 
 function mapStateToProps({posts}, ownProps) {

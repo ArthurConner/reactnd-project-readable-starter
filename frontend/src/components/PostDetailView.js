@@ -42,7 +42,7 @@ class PostDetailView extends React.Component {
       }}>
    
           
-          <PostView postid={postid} />
+          <PostView postid={postid}  isSummary={postid} />
           <ol>
                {
       comments.map((comment) => (
@@ -106,7 +106,7 @@ function mapStateToProps({posts}, ownProps) {
 
 
 function mapDispatchToProps(dispatch) {
-  console.log("mapping fetch")
+
   return {
     fetchPost: (data) => dispatch(fetchPost(data))
   }
