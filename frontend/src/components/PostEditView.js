@@ -1,53 +1,115 @@
-
-
 import React from 'react'
 
 import '../styles/ui/semantic.min.css'
 
 import { connect } from 'react-redux'
-
 import { Link } from 'react-router-dom'
-import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import { postFromProps } from "./categoryIcon"
-import { changePostVote } from '../actions'
+import { updatePost } from '../actions'
 import MenuView from "./menu.js"
-
 
 
 
 class PostEditView extends React.Component {
 
 
-  savePost(x, post) {
+  // state = { stitle: '', author: '', body: '', submittedEmail: '' }
 
-    console.log("doing save")
+
+
+  state = {
+    author: this.props.post.author,
+    title: this.props.post.title,
+    category: this.props.post.category,
+    body: this.props.post.body,
+    commentCount: this.props.post.commentCount,
+    deleted: this.props.post.deleted,
+    id: this.props.post.id,
+    timestamp: this.props.post.timestamp,
+    voteScore: this.props.post.voteScore,
+    newPost: this.props.post.newPost
+
   }
+
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.post) {
+      this.setState({
+        author: nextProps.post.author,
+        title: nextProps.post.title,
+        category: nextProps.post.category,
+        body: nextProps.post.body,
+        commentCount: nextProps.post.commentCount,
+        deleted: nextProps.post.deleted,
+        id: nextProps.post.id,
+        timestamp: nextProps.post.timestamp,
+        voteScore: nextProps.post.voteScore,
+        newPost: nextProps.post.newPost
+      })
+    }
+  }
+
+  handleChange = (e, {name, value}) => {
+    console.log("Changing form", name, value)
+    this.setState({
+      [name]: value
+    })
+
+  }
+
+  handleButton = (e, {name, value}) => {
+    // this.setState({ [name]: value })
+
+    console.log("Handling button:", name, value)
+
+    this.setState({
+      category: value
+    })
+  }
+
+  handleSubmit = () => {
+    const {author, body, category, title, commentCount, deleted, id, timestamp, voteScore} = this.state
+    //console.log("HANDLE SUBMIT")
+    //console.log("author: "+author)
+    //console.log(this.state)
+
+    let newPost = {
+      author: author,
+      body: body,
+      category: category,
+      commentCount: commentCount,
+      deleted: deleted,
+      id: id,
+      timestamp: timestamp,
+      title: title,
+      voteScore: voteScore
+    }
+    console.log(newPost)
+
+    this.props.updatePost({
+      post: newPost
+    })
+    /*
+    if (this.state.newPost===true) {
+      this.props.newPost(newPost)
+    }
+    else {
+      this.props.updatePost(newPost)
+
+    }
+//    setPost
+//    updatePost
+*/
+    // this.context.router.history.goBack()
+
+  }
+
 
   render() {
 
-
-    const postid = this.props.postid
-    const post = this.props.post
-
-    const isSummary = this.props.isSummary
-
-    let commentLink = "/post/comments/" + postid
-    /*
-    let cat = post.category
-
-    let color = colorForCategory({
-      cat
-    })
-    let catLink = "/category/" + cat
-    */
-
-    let catLink = "/category/"
-    let color = ""
-
-
-    var d = new Date(post.timestamp).toDateString();
-
-    const header = "here we are"
+    const catKeys = this.props.catKeys
+    const categories = this.props.categories
 
     return (
 
@@ -61,74 +123,46 @@ class PostEditView extends React.Component {
         marginRight: "10px",
         backgroundColor: "white"
       }}>
+   
+      <Form onSubmit={this.handleSubmit}>
       
-      <Header style={{
-        color
-      }}>{header}</Header>
+        <Form.Group widths='equal'>
+        <Form.Input fluid label='Title'  name='title' value={this.state.title} onChange={this.handleChange} />
+         <Form.Input fluid label='Author'  name='author' value={this.state.author} onChange={this.handleChange} />
+        </Form.Group>
 
-     
-      <Item> 
-       <ItemContent>
-         <Header style ={{
-        color
-      }}
-      >{post.title}</Header>
+        <Form.TextArea label='Body'  name='body' value={this.state.body} onChange={this.handleChange} />
+        
+        <Form.Group inline>
+          <label>Category</label>
 
-      <ItemDescription>
-      {post.body}
+          {catKeys.map((key) => {
+        const cat = categories[key]
+        return <Form.Radio
+          label={cat.desc}
+          value={key}
+          checked={this.state.category === key}
+          onChange={this.handleButton}  />
 
-
-</ItemDescription>
-      <ItemDescription>
-      <small>{d}, 
-      Author:<i>{post.author}</i>, Category:<Link
-      to={catLink}
-      style ={{
-        color
-      }}
-
-      >{post.category}</Link>,  Comments:<Link
-      to={commentLink}
-
-      >{post.commentCount} </Link> , score:{post.voteScore} 
-      </small>
-    
- 
-
-<span style={{
+      }
+      )}
+         
+        </Form.Group>
+     <div>
+        <span style={{
         float: "right"
       }}  >
- <Button circular  size = "tiny" icon='save'
-      onClick={ () => {
-        this.savePost({
-          post,
-          direction: true
-        })
-      }
-      }
-
-
-
-
-      />
-   
- 
-
-</span>
-<div><br/>
-
-</div>
-      </ItemDescription>
-      </ItemContent>
-       </Item>
-      
+        <Form.Button content='Submit'>Save</Form.Button>
+        </span>
         </div>
-        </div>
+        <br/><br/>
+      </Form>
+
+ </div>
+ </div>
     )
   }
-
 }
-
 
 
 function mapStateToProps({posts, categories} , ownProps) {
@@ -141,11 +175,9 @@ function mapStateToProps({posts, categories} , ownProps) {
 }
 
 
-
 function mapDispatchToProps(dispatch) {
-
   return {
-    changePostVote: (data) => dispatch(changePostVote(data))
+    updatePost: (data) => dispatch(updatePost(data))
   }
 }
 

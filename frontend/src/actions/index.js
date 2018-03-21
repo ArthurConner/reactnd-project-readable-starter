@@ -107,6 +107,14 @@ export function fetchPost({postid}) {
 
 }
 
+export function updatePost({post}) {
+
+  return {
+    type: UPDATE_POST,
+    post
+  }
+}
+
 export function changePostVote({post, direction}) {
 
   const postid = post.id
