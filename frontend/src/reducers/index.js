@@ -160,10 +160,6 @@ function reditReducer(state = initialRedState, action) {
         return acc
       }, {})
 
-
-
-      console.log("reducing cats", nextCategories)
-
       return {
         ...state,
         "posts": nextPosts,

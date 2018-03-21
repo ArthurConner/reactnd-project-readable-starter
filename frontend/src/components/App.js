@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 import MainView from './rootView.js'
 import CommentView from './commentView.js'
 import PostDetailView from "./PostDetailView"
+import PostEditView from "./PostEditView"
 
 import { connect } from 'react-redux'
 import { loadPosts } from '../actions'
@@ -36,6 +37,12 @@ class BooksApp extends React.Component {
 
        <Route exact path='/category/:id' render={({history, match}) => (
         <MainView  category={match.params.id} />
+      )}/>
+
+
+
+       <Route exact path='/post/edit/:id' render={({history, match}) => (
+        <PostEditView  postid={match.params.id} />
       )}/>
 
          

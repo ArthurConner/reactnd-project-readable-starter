@@ -10,7 +10,7 @@ import sortBy from 'sort-by'
 import MenuView from "./menu.js"
 
 import PostView from "./PostView"
-import { iconForCategory, colorForCategory } from "./categoryIcon"
+import { categoryFromProps } from "./categoryIcon"
 
 
 
@@ -33,9 +33,7 @@ class RootView extends React.Component {
   */
 
   shiftItem = (event) => {
-    // let posts = [...this.props.posts]
     const orderBy = event.target.value
-    // posts.sort(sortBy(orderBy))
     const ret = {
       orderBy
     }
@@ -53,26 +51,20 @@ class RootView extends React.Component {
     posts = [...posts]
 
     let secName = this.props.category
-    //console.log("mainview category is",secName)
 
     let header = ""
     let color = {}
 
     if (secName) {
-      if (this.state.categories) {
 
-        header = this.state.categories[secName].name
+      if (this.props.categories && this.props.categories[secName]) {
 
-
+        header = this.props.categories[secName].desc
+        color = this.props.categories[secName].color
       } else {
         header = secName
       }
 
-      header = header.charAt(0).toUpperCase() + header.slice(1);
-
-      color = colorForCategory({
-        cat: secName
-      })
 
       posts = posts.filter((post) => {
         return post.category === secName
@@ -145,16 +137,9 @@ function mapStateToProps({posts, categories} ,ownProps) {
 
   const keys = Object.keys(posts)
 
-
-
-
-  if (!(categories)) {
-    categories = {}
-  }
-
-  let catKeys = Object.keys(categories)
-  catKeys.sort()
-
+  let cats = categoryFromProps({
+    categories
+  })
 
   if (keys.length > 0) {
     let mainPosts = Object.keys(posts).map((key) => {
@@ -162,15 +147,14 @@ function mapStateToProps({posts, categories} ,ownProps) {
     })
 
     return {
+      ...cats,
       "posts": mainPosts,
-      categories,
-      catKeys
+
     }
   }
   return {
+    ...cats,
     "posts": [],
-    categories,
-    catKeys
   }
 }
 

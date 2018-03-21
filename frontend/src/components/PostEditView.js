@@ -10,36 +10,18 @@ import { Link } from 'react-router-dom'
 import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
 import { postFromProps } from "./categoryIcon"
 import { changePostVote } from '../actions'
+import MenuView from "./menu.js"
 
 
-function nextButton(x, postid) {
 
-  if ('undefined' === typeof x) {
 
-    let commentLink = "/post/comments/" + postid
+class PostEditView extends React.Component {
 
-    return (
-      <Link
-      to={commentLink}>
-     <Button circular  size = "tiny" icon='folder open outline' >
-      </Button>
-      </Link>
-    )
+
+  savePost(x, post) {
+
+    console.log("doing save")
   }
-
-  let editLink = "/post/edit/" + postid
-  return (
-
-    <Link
-    to={editLink}>
-   <Button circular  size = "tiny" icon='pencil alternate' >
-    </Button>
-    </Link>
-  )
-}
-
-
-class PostView extends React.Component {
 
   render() {
 
@@ -50,21 +32,41 @@ class PostView extends React.Component {
     const isSummary = this.props.isSummary
 
     let commentLink = "/post/comments/" + postid
+    /*
     let cat = post.category
-    let catInfo = this.props.categories[cat]
-    let color = catInfo.color
-    let catdesc = catInfo.desc
-    let catLink = "/category/" + cat
 
-    const finalButton = nextButton(isSummary, postid)
+    let color = colorForCategory({
+      cat
+    })
+    let catLink = "/category/" + cat
+    */
+
+    let catLink = "/category/"
+    let color = ""
+
 
     var d = new Date(post.timestamp).toDateString();
 
+    const header = "here we are"
 
     return (
 
 
       <div key="postdetail_{postid}_{isSummary}">
+      
+      <MenuView/>
+      <div style = {{
+        marginTop: "10px",
+        marginLeft: "10px",
+        marginRight: "10px",
+        backgroundColor: "white"
+      }}>
+      
+      <Header style={{
+        color
+      }}>{header}</Header>
+
+     
       <Item> 
        <ItemContent>
          <Header style ={{
@@ -85,7 +87,7 @@ class PostView extends React.Component {
         color
       }}
 
-      >{catdesc}</Link>,  Comments:<Link
+      >{post.category}</Link>,  Comments:<Link
       to={commentLink}
 
       >{post.commentCount} </Link> , score:{post.voteScore} 
@@ -96,29 +98,21 @@ class PostView extends React.Component {
 <span style={{
         float: "right"
       }}  >
- <Button circular  size = "tiny" icon='hand point up outline'
+ <Button circular  size = "tiny" icon='save'
       onClick={ () => {
-        this.props.changePostVote({
+        this.savePost({
           post,
           direction: true
         })
       }
       }
-      />
-     <Button circular  size = "tiny" icon='hand point down outline'
 
-      onClick={ () => {
-        this.props.changePostVote({
-          post,
-          direction: false
-        })
-      }
-      }
+
 
 
       />
    
-     {finalButton}
+ 
 
 </span>
 <div><br/>
@@ -128,6 +122,7 @@ class PostView extends React.Component {
       </ItemContent>
        </Item>
       
+        </div>
         </div>
     )
   }
@@ -157,4 +152,4 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps, mapDispatchToProps
-)(PostView)
+)(PostEditView)
