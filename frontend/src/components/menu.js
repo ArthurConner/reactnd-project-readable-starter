@@ -52,7 +52,13 @@ class MenuView extends React.Component {
       })
       }
 
+       <Menu.Item as= {Link}  to="/new/post" >
+          New
+        </Menu.Item>
+
       </Menu>
+
+       
       
       </div>
     )

@@ -6,13 +6,13 @@ import PropTypes from "prop-types";
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Form } from 'semantic-ui-react'
-import { postFromProps } from "./categoryIcon"
+import { categoryFromProps } from "./categoryIcon"
 import { updatePost } from '../actions'
 import MenuView from "./menu.js"
 
 
 
-class PostEditView extends React.Component {
+class PostNewView extends React.Component {
 
 
   // state = { stitle: '', author: '', body: '', submittedEmail: '' }
@@ -20,16 +20,15 @@ class PostEditView extends React.Component {
 
 
   state = {
-    author: this.props.post.author,
-    title: this.props.post.title,
-    category: this.props.post.category,
-    body: this.props.post.body,
-    commentCount: this.props.post.commentCount,
-    deleted: this.props.post.deleted,
+    author: "",
+    title: "",
+    category: "react",
+    body: "",
+    commentCount: 0,
     id: this.props.post.id,
-    timestamp: this.props.post.timestamp,
-    voteScore: this.props.post.voteScore,
-    newPost: this.props.post.newPost
+    timestamp: new Date().getTime(),
+    voteScore: 0
+  
 
   }
 
@@ -45,22 +44,7 @@ class PostEditView extends React.Component {
   };
 
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.post) {
-      this.setState({
-        author: nextProps.post.author,
-        title: nextProps.post.title,
-        category: nextProps.post.category,
-        body: nextProps.post.body,
-        commentCount: nextProps.post.commentCount,
-        deleted: nextProps.post.deleted,
-        id: nextProps.post.id,
-        timestamp: nextProps.post.timestamp,
-        voteScore: nextProps.post.voteScore,
-        newPost: nextProps.post.newPost
-      })
-    }
-  }
+ 
 
   handleChange = (e, {name, value}) => {
     console.log("Changing form", name, value)
@@ -182,12 +166,11 @@ class PostEditView extends React.Component {
 }
 
 
-function mapStateToProps({posts, categories} , ownProps) {
+function mapStateToProps({categories}) {
 
-  return postFromProps({
-    posts,
+  return categoryFromProps({
     categories
-  }, ownProps)
+  })
 
 }
 

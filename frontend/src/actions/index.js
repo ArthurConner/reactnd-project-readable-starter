@@ -109,11 +109,41 @@ export function fetchPost({postid}) {
 
 export function updatePost({post}) {
 
-  return {
-    type: UPDATE_POST,
-    post
+  return (dispatch) =>{
+
+    let data = post
+    let postid = post.id
+
+    const postsurl = {
+      method: 'put',
+      url: `${api}/posts/${postid}`,
+      headers: {
+        ...headers,
+      },
+      data
+    }
+
+    console.log("update post posting", postsurl)
+
+    axios(postsurl).then(function(response) {
+
+      const back = response.data
+      const retAction = {
+        type: UPDATE_POST,
+        post: back
+
+      }
+      dispatch(retAction)
+
+    }).catch(function(error) {
+      console.log("we have a update posting error")
+      console.log(error);
+    });
+
   }
+
 }
+
 
 export function changePostVote({post, direction}) {
 
@@ -170,8 +200,7 @@ export function changePostVote({post, direction}) {
       const back = response.data
       const retAction = {
         type: UPDATE_POST,
-        post: back,
-        isError: true
+        post: back
 
       }
       dispatch(retAction)

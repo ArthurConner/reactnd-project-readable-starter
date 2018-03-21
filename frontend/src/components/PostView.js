@@ -51,9 +51,13 @@ class PostView extends React.Component {
 
     let commentLink = "/post/comments/" + postid
     let cat = post.category
+    let color = {}
+    let catdesc = cat 
+    if (this.props.categories && this.props.categories[cat]) {
     let catInfo = this.props.categories[cat]
-    let color = catInfo.color
-    let catdesc = catInfo.desc
+     color = catInfo.color
+     catdesc = catInfo.desc
+    }
     let catLink = "/category/" + cat
 
     const finalButton = nextButton(isSummary, postid)
