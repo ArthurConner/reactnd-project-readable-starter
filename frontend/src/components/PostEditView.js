@@ -63,7 +63,7 @@ class PostEditView extends React.Component {
   }
 
   handleChange = (e, {name, value}) => {
-    console.log("Changing form", name, value)
+   // console.log("Changing form", name, value)
     this.setState({
       [name]: value
     })
@@ -87,15 +87,15 @@ class PostEditView extends React.Component {
     //console.log(this.state)
 
     let newPost = {
-      author: author,
-      body: body,
-      category: category,
-      commentCount: commentCount,
-      deleted: deleted,
-      id: id,
+      author,
+      body,
+      category,
+      commentCount,
+      deleted,
+      id,
       timestamp: new Date().getTime(),
-      title: title,
-      voteScore: voteScore
+       title,
+      voteScore
     }
     console.log(newPost)
 

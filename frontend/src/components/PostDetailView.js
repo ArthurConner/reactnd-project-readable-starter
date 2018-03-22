@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom'
 import { fetchPost } from '../actions'
 import PostView from "./PostView"
 
+import CommentView from "./commentView"
+
 class PostDetailView extends React.Component {
 
 
@@ -24,9 +26,19 @@ class PostDetailView extends React.Component {
 
   render() {
 
-    const comments = this.props.comments
+    const comments = this.props.comments.filter((post) => {
+      return !(post.deleted)
+    })
 
     const {postid} = this.props;
+
+    const toggleItem = (x)=>{
+      console.log("did toggle " ,x)
+    }
+
+    const removeItem = (x)=>{
+      console.log("did remove ", x)
+    }
 
     return (
 
@@ -46,9 +58,12 @@ class PostDetailView extends React.Component {
           <ol>
                {
       comments.map((comment) => (
-        <li> {comment.author}</li>
+
+        <CommentView comment={comment}  toggleItem={toggleItem} removeItem={removeItem}/>
+     
+      
       )
-      )
+    )
       }      
         </ol>
 
@@ -83,7 +98,14 @@ function mapStateToProps({posts}, ownProps) {
 
   const ourPost = posts[ownProps.postid]
   //console.log("our post", ourPost)
-  const comments = ourPost.comments
+  let comments = ourPost.comments
+
+  /*
+  if ('undefined' !== typeof comments) {
+   comments = comments.filter((post) => {
+    return !(post.deleted)
+  })
+  }*/
   const keys = Object.keys(comments)
 
   //console.log("these are our comments")
