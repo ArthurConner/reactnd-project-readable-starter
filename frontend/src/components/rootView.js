@@ -55,6 +55,10 @@ class RootView extends React.Component {
     let header = ""
     let color = {}
 
+    posts = posts.filter((post) => {
+      return !(post.deleted)
+    })
+
     if (secName) {
 
       if (this.props.categories && this.props.categories[secName]) {

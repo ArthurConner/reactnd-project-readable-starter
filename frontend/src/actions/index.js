@@ -107,15 +107,15 @@ export function fetchPost({postid}) {
 
 }
 
-export function updatePost({post}) {
+export function updatePost({post, finish}) {
 
-  return (dispatch) =>{
+  return (dispatch) => {
 
     let data = post
     let postid = post.id
 
     const postsurl = {
-      method: 'put',
+      method: "put",
       url: `${api}/posts/${postid}`,
       headers: {
         ...headers,
@@ -134,6 +134,51 @@ export function updatePost({post}) {
 
       }
       dispatch(retAction)
+      if ('undefined' !== typeof finish) {
+        console.log("finishing the action")
+        finish()
+      }
+
+    }).catch(function(error) {
+      console.log("we have a update posting error")
+      console.log(error);
+    });
+
+  }
+
+}
+
+export function addPost({post, finish}) {
+
+  return (dispatch) => {
+
+    let data = post
+    let postid = post.id
+
+    const postsurl = {
+      method: "post",
+      url: `${api}/posts`,
+      headers: {
+        ...headers,
+      },
+      data
+    }
+
+    console.log("update post posting", postsurl)
+
+    axios(postsurl).then(function(response) {
+
+      const back = response.data
+      const retAction = {
+        type: UPDATE_POST,
+        post: back
+
+      }
+      dispatch(retAction)
+      if ('undefined' !== typeof finish) {
+        console.log("finishing the action")
+        finish()
+      }
 
     }).catch(function(error) {
       console.log("we have a update posting error")

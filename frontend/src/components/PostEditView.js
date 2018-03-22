@@ -93,18 +93,22 @@ class PostEditView extends React.Component {
       commentCount: commentCount,
       deleted: deleted,
       id: id,
-      timestamp: timestamp,
+      timestamp: new Date().getTime(),
       title: title,
       voteScore: voteScore
     }
     console.log(newPost)
 
     this.props.updatePost({
-      post: newPost
+      post: newPost,
+      finish: (() => {
+
+        this.context.router.history.push("/category/" + category)
+      })
     })
 
     this.context.router.history.goBack()
-    
+
     /*
 
    

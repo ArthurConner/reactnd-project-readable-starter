@@ -7,17 +7,22 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Form } from 'semantic-ui-react'
 import { categoryFromProps } from "./categoryIcon"
-import { updatePost } from '../actions'
+import { addPost } from '../actions'
 import MenuView from "./menu.js"
 
 
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+
 class PostNewView extends React.Component {
-
-
-  // state = { stitle: '', author: '', body: '', submittedEmail: '' }
-
-
 
   state = {
     author: "",
@@ -25,11 +30,9 @@ class PostNewView extends React.Component {
     category: "react",
     body: "",
     commentCount: 0,
-    id: this.props.post.id,
+    id: guid(),
     timestamp: new Date().getTime(),
     voteScore: 0
-  
-
   }
 
 
@@ -44,7 +47,7 @@ class PostNewView extends React.Component {
   };
 
 
- 
+
 
   handleChange = (e, {name, value}) => {
     console.log("Changing form", name, value)
@@ -76,33 +79,19 @@ class PostNewView extends React.Component {
       category: category,
       commentCount: commentCount,
       deleted: deleted,
-      id: id,
-      timestamp: timestamp,
+      id: guid(),
+      timestamp: new Date().getTime(),
       title: title,
       voteScore: voteScore
     }
     console.log(newPost)
 
-    this.props.updatePost({
+    this.props.addPost({
       post: newPost
     })
 
     this.context.router.history.goBack()
-    
-    /*
 
-   
-    if (this.state.newPost===true) {
-      this.props.newPost(newPost)
-    }
-    else {
-      this.props.updatePost(newPost)
-
-    }
-//    setPost
-//    updatePost
-*/
-    // this.context.router.history.goBack()
 
   }
 
@@ -177,11 +166,11 @@ function mapStateToProps({categories}) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updatePost: (data) => dispatch(updatePost(data))
+    addPost: (data) => dispatch(addPost(data))
   }
 }
 
 
 export default connect(
   mapStateToProps, mapDispatchToProps
-)(PostEditView)
+)(PostNewView)
