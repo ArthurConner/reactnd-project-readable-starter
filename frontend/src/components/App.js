@@ -2,8 +2,8 @@ import React from 'react'
 
 import '../styles/App.css'
 import { Switch, Route } from 'react-router-dom'
-import MainView from './rootView.js'
-import CommentView from './commentView.js'
+import MainView from './RootView.js'
+
 import PostDetailView from "./PostDetailView"
 import PostEditView from "./PostEditView"
 import PostNewView from "./PostNewView"

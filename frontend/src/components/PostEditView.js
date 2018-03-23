@@ -4,19 +4,14 @@ import '../styles/ui/semantic.min.css'
 import PropTypes from "prop-types";
 
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { Form } from 'semantic-ui-react'
-import { postFromProps } from "./categoryIcon"
+import { postFromProps } from "./CategoryUtils"
 import { updatePost } from '../actions'
-import MenuView from "./menu.js"
+import MenuView from "./Menu.js"
 
 
 
 class PostEditView extends React.Component {
-
-
-  // state = { stitle: '', author: '', body: '', submittedEmail: '' }
-
 
 
   state = {
@@ -63,7 +58,7 @@ class PostEditView extends React.Component {
   }
 
   handleChange = (e, {name, value}) => {
-    // console.log("Changing form", name, value)
+
     this.setState({
       [name]: value
     })
@@ -71,7 +66,6 @@ class PostEditView extends React.Component {
   }
 
   handleButton = (e, {name, value}) => {
-    // this.setState({ [name]: value })
 
     console.log("Handling button:", name, value)
 
@@ -81,10 +75,7 @@ class PostEditView extends React.Component {
   }
 
   handleSubmit = () => {
-    const {author, body, category, title, commentCount, deleted, id, timestamp, voteScore} = this.state
-    //console.log("HANDLE SUBMIT")
-    //console.log("author: "+author)
-    //console.log(this.state)
+    const {author, body, category, title, commentCount, deleted, id, voteScore} = this.state
 
     let newPost = {
       author,
@@ -109,20 +100,6 @@ class PostEditView extends React.Component {
 
     this.context.router.history.goBack()
 
-    /*
-
-   
-    if (this.state.newPost===true) {
-      this.props.newPost(newPost)
-    }
-    else {
-      this.props.updatePost(newPost)
-
-    }
-//    setPost
-//    updatePost
-*/
-    // this.context.router.history.goBack()
 
   }
 

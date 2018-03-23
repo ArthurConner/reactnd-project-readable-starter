@@ -2,7 +2,8 @@
 import axios from 'axios'
 export const LOAD_SERVER = 'LOAD_SERVER'
 export const UPDATE_POST = 'UPDATE_POST'
-const api = "http://localhost:3001"
+
+export const api = "http://localhost:3001"
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -10,7 +11,7 @@ let token = localStorage.token
 if (!token)
   token = localStorage.token = Math.random().toString(36).substr(-8)
 
-const headers = {
+export const headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json',
   'Authorization': token
@@ -153,7 +154,6 @@ export function addPost({post, finish}) {
   return (dispatch) => {
 
     let data = post
-    let postid = post.id
 
     const postsurl = {
       method: "post",

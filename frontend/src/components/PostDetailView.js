@@ -1,16 +1,16 @@
 import React from 'react'
 
 import '../styles/App.css'
-import MenuView from "./menu.js"
+import MenuView from "./Menu.js"
 
 import { connect } from 'react-redux'
 
 import sortBy from 'sort-by'
-import { Link } from 'react-router-dom'
+
 import { fetchPost } from '../actions'
 import PostView from "./PostView"
 
-import CommentView from "./commentView"
+import CommentView from "./CommentDisplay.js"
 import CommentEditView from "./CommentEditView.js"
 
 
@@ -60,7 +60,7 @@ class PostDetailView extends React.Component {
       console.log("did remove ", x)
     }
 
-    const saveItem  = (x) => {
+    const saveItem = (x) => {
       console.log("did remove ", x)
     }
 

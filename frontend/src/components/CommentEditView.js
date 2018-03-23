@@ -1,12 +1,13 @@
 import React from 'react'
-
 import '../styles/App.css'
+
+
 import { connect } from 'react-redux'
-
-import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
-
+import { Form, Button } from 'semantic-ui-react'
 
 
+import { Link } from 'react-router-dom'
+import { fetchPost } from '../actions'
 
 class CommentView extends React.Component {
 
@@ -166,26 +167,21 @@ class CommentView extends React.Component {
     const buttonBar = this.makeBar(toggleItem, removeItem)
 
 
-    var d = new Date(this.state.timestamp).toDateString();
-
     return (
-      <Item key ={"commentRaw_" + this.state.id}> 
-      <ItemContent>
-       {this.state.body}
 
-     <ItemDescription> {d}, 
-     <small>
-     Author:<i>{this.state.author}</i>, score:{this.state.voteScore} 
-     </small>
-     {buttonBar}
-   
-<div><br/>
+      <Form onSubmit={this.handleSubmit} key ={"commentInput_" + this.state.id}>
+      
+      <Form.Group widths='equal'>
+       <Form.Input fluid label='Comment Author'  name='author' value={this.state.author} onChange={this.handleChange} />
+      </Form.Group>
 
-</div>
-     </ItemDescription>
-     </ItemContent>
+      <Form.TextArea label='Body'  name='body' value={this.state.body} onChange={this.handleChange} />
+      
+  
+      {buttonBar}
+      <br/><br/>
+    </Form>
 
-      </Item>
     )
   }
 

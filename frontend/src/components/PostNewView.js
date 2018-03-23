@@ -4,11 +4,10 @@ import '../styles/ui/semantic.min.css'
 import PropTypes from "prop-types";
 
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { Form } from 'semantic-ui-react'
-import { categoryFromProps } from "./categoryIcon"
+import { categoryFromProps } from "./CategoryUtils"
 import { addPost } from '../actions'
-import MenuView from "./menu.js"
+import MenuView from "./Menu.js"
 
 
 
@@ -68,10 +67,8 @@ class PostNewView extends React.Component {
   }
 
   handleSubmit = () => {
-    const {author, body, category, title, commentCount, deleted, id, timestamp, voteScore} = this.state
-    //console.log("HANDLE SUBMIT")
-    //console.log("author: "+author)
-    //console.log(this.state)
+    const {author, body, category, title, commentCount, deleted, id, voteScore} = this.state
+
 
     let newPost = {
       author,
@@ -79,7 +76,7 @@ class PostNewView extends React.Component {
       category,
       commentCount,
       deleted,
-      id: guid(),
+      id: id,
       timestamp: new Date().getTime(),
       title,
       voteScore

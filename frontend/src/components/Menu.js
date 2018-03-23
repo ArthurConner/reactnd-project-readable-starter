@@ -2,13 +2,9 @@ import React from 'react'
 import '../styles/ui/semantic.min.css'
 
 import { Link } from 'react-router-dom'
-import { categoryFromProps } from "./categoryIcon"
-import { Menu, DropdownMenu, DropdownItem, Header } from 'semantic-ui-react'
+import { categoryFromProps } from "./CategoryUtils"
+import { Menu, Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import sortBy from 'sort-by'
-
-
-
 
 
 class MenuView extends React.Component {
@@ -17,9 +13,6 @@ class MenuView extends React.Component {
   render() {
 
     let {categories, catKeys} = this.props
-
-    const spacing = 2
-
     return (
       <div style = {{
         backgroundColor: "White"
@@ -34,9 +27,6 @@ class MenuView extends React.Component {
         <Menu.Item as= {Link}  to="/" >
           All
         </Menu.Item>
-
-
-
 
   {
       catKeys.map((key) => {

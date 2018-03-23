@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom'
 import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
-import { postFromProps } from "./categoryIcon"
+import { postFromProps } from "./CategoryUtils"
 import { changePostVote, updatePost } from '../actions'
 
 

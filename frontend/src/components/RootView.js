@@ -2,15 +2,14 @@ import React from 'react'
 import '../styles/ui/semantic.min.css'
 import { connect } from 'react-redux'
 
-import { Link } from 'react-router-dom'
 
 import { Header, List, Dropdown } from 'semantic-ui-react'
 
 import sortBy from 'sort-by'
-import MenuView from "./menu.js"
+import MenuView from "./Menu.js"
 
 import PostView from "./PostView"
-import { categoryFromProps } from "./categoryIcon"
+import { categoryFromProps } from "./CategoryUtils"
 
 
 
@@ -22,15 +21,6 @@ class RootView extends React.Component {
   }
 
 
-  /*
-    title: 'Learn Redux in 10 minutes!',
-    body: 'Just kidding. It takes more than 10 minutes to learn technology.',
-    author: 'thingone',
-    category: 'redux',
-    voteScore: -5,
-    deleted: false,
-    commentCount: 0
-  */
 
   shiftItem = (event) => {
     const orderBy = event.target.value

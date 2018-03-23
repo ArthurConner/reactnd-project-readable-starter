@@ -1,8 +1,9 @@
 
 
 import { LOAD_SERVER, UPDATE_POST } from '../actions'
+import { UPDATE_COMMENT } from '../actions/comments.js'
 
-const initialTestCalendarState = {
+const initialTestState = {
 
 
 
@@ -183,6 +184,29 @@ function reditReducer(state = initialRedState, action) {
       return {
         ...state,
         "posts": retPosts
+
+      }
+
+    case UPDATE_COMMENT:
+
+      const {comment} = action
+      let pSource = state.posts[comment.parentId]
+      if (pSource) {
+        let nextP = {
+          ...post
+        }
+        nextP.comments[comment.id] = comment
+
+        let retPosts = {
+          ...state.posts
+        }
+        retPosts[post.id] = nextP
+        //console.log("got posts",retPosts)
+        return {
+          ...state,
+          "posts": retPosts
+
+        }
 
       }
 
