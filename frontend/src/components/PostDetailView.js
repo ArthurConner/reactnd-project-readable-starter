@@ -11,6 +11,8 @@ import { fetchPost } from '../actions'
 import PostView from "./PostView"
 
 import CommentView from "./commentView"
+import CommentEditView from "./CommentEditView.js"
+
 
 class PostDetailView extends React.Component {
 
@@ -24,6 +26,11 @@ class PostDetailView extends React.Component {
   }
 
 
+  state = {
+    commentStatus: {}
+
+  }
+
   render() {
 
     const comments = this.props.comments.filter((post) => {
@@ -32,11 +39,28 @@ class PostDetailView extends React.Component {
 
     const {postid} = this.props;
 
-    const toggleItem = (x)=>{
-      console.log("did toggle " ,x)
+    const toggleItem = (x) => {
+      console.log("did toggle ", x)
+
+      let commentStatus = {
+        ...this.state.commentStatus
+      }
+      const status = commentStatus[x]
+      if (status && status === "editing") {
+        commentStatus[x] = "done"
+      } else {
+        commentStatus[x] = "editing"
+      }
+      this.setState({
+        commentStatus
+      })
     }
 
-    const removeItem = (x)=>{
+    const removeItem = (x) => {
+      console.log("did remove ", x)
+    }
+
+    const saveItem  = (x) => {
       console.log("did remove ", x)
     }
 
@@ -57,13 +81,16 @@ class PostDetailView extends React.Component {
           <PostView postid={postid}  isSummary={postid} />
           <ol>
                {
-      comments.map((comment) => (
-
-        <CommentView comment={comment}  toggleItem={toggleItem} removeItem={removeItem}/>
-     
-      
+      comments.map((comment) => {
+        const status = this.state.commentStatus[comment.id]
+        if (status && status === "editing") {
+          return <CommentEditView comment={comment} toggleItem={toggleItem}/>
+        }
+        return (
+          <CommentView comment={comment}  toggleItem={toggleItem} removeItem={removeItem}/>
+        )
+      }
       )
-    )
       }      
         </ol>
 

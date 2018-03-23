@@ -47,7 +47,7 @@ class PostNewView extends React.Component {
   };
 
 
- 
+
 
   handleChange = (e, {name, value}) => {
     console.log("Changing form", name, value)
@@ -60,7 +60,7 @@ class PostNewView extends React.Component {
   handleButton = (e, {name, value}) => {
     // this.setState({ [name]: value })
 
-   // console.log("Handling button:", name, value)
+    // console.log("Handling button:", name, value)
 
     this.setState({
       category: value
@@ -74,29 +74,30 @@ class PostNewView extends React.Component {
     //console.log(this.state)
 
     let newPost = {
-     author,
-       body,
-    category,
+      author,
+      body,
+      category,
       commentCount,
-       deleted,
+      deleted,
       id: guid(),
-      timestamp:  new Date().getTime(),
-     title,
+      timestamp: new Date().getTime(),
+      title,
       voteScore
     }
     console.log(newPost)
 
     this.props.addPost({
       post: newPost,
-      finish:(()=>{
+      finish: (() => {
 
         this.context.router.history.push("/category/" + category)
       }
-    
-    )})
 
-   
-    
+      )
+    })
+
+
+
 
   }
 
