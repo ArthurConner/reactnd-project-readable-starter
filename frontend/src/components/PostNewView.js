@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { connect } from 'react-redux'
 import { Form } from 'semantic-ui-react'
-import { categoryFromProps } from "./CategoryUtils"
+import { categoryFromProps, emptyPost } from "./CategoryUtils"
 import { addPost } from '../actions'
 import MenuView from "./Menu.js"
 
@@ -23,17 +23,7 @@ function guid() {
 
 class PostNewView extends React.Component {
 
-  state = {
-    author: "",
-    title: "",
-    category: "react",
-    body: "",
-    commentCount: 0,
-    id: guid(),
-    timestamp: new Date().getTime(),
-    voteScore: 0
-  }
-
+  state = emptyPost()
 
   static contextTypes = {
     router: PropTypes.shape({

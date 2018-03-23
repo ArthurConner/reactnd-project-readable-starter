@@ -8,8 +8,9 @@ import { connect } from 'react-redux'
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom'
 import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
-import { postFromProps } from "./CategoryUtils"
+import { postFromProps, emptyPost } from "./CategoryUtils"
 import { changePostVote, updatePost } from '../actions'
+
 
 
 function nextButton(x, postid, post, host) {
@@ -139,10 +140,14 @@ class PostView extends React.Component {
   render() {
 
 
-    const postid = this.props.postid
-    const post = this.props.post
+    let {postid, post} = this.props
+    console.log("In postView with ", post)
 
     const isSummary = this.props.isSummary
+
+    if (!(post)) {
+      post = emptyPost()
+    }
 
     let commentLink = "/post/comments/" + postid
     let cat = post.category

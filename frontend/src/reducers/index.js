@@ -193,15 +193,23 @@ function reditReducer(state = initialRedState, action) {
       let pSource = state.posts[comment.parentId]
       if (pSource) {
         let nextP = {
-          ...post
+          ...pSource
         }
-        nextP.comments[comment.id] = comment
+
+        if (nextP.comments) {
+          nextP.comments[comment.id] = comment
+        } else {
+          const key = comment.id
+          nextP.comments = {
+            key: comment
+          }
+        }
 
         let retPosts = {
           ...state.posts
         }
-        retPosts[post.id] = nextP
-        //console.log("got posts",retPosts)
+        retPosts[comment.parentId] = nextP
+        console.log("changing posts", nextP)
         return {
           ...state,
           "posts": retPosts

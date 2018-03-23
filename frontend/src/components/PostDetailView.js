@@ -14,6 +14,7 @@ import CommentView from "./CommentDisplay.js"
 import CommentEditView from "./CommentEditView.js"
 
 
+
 class PostDetailView extends React.Component {
 
 
@@ -37,7 +38,9 @@ class PostDetailView extends React.Component {
       return !(post.deleted)
     })
 
-    const {postid} = this.props;
+    const {postid, post} = this.props;
+
+
 
     const toggleItem = (x) => {
       console.log("did toggle ", x)
@@ -78,7 +81,7 @@ class PostDetailView extends React.Component {
       }}>
    
           
-          <PostView postid={postid}  isSummary={postid} />
+          <PostView postid={postid} post={post} isSummary={false} />
           <ol>
                {
       comments.map((comment) => {
@@ -104,12 +107,14 @@ class PostDetailView extends React.Component {
 
 
 function mapStateToProps({posts}, ownProps) {
-  // console.log("this is our post id")
+  //console.log("this is our post id",posts)
   if (!(ownProps.postid)) {
     // console.log("do not have a postid")
     // console.log(posts)
     return {
-      comments: []
+      comments: [],
+      post: {}
+
     }
   }
   //console.log(posts[ownProps.postid])
@@ -119,7 +124,8 @@ function mapStateToProps({posts}, ownProps) {
     // console.log("do not have a posts[ownProps.postid]")
     //console.log(posts)
     return {
-      comments: []
+      comments: [],
+      post: {}
     }
   }
 
@@ -144,7 +150,8 @@ function mapStateToProps({posts}, ownProps) {
     })
     mainPosts.sort(sortBy('timestamp'))
     return {
-      "comments": mainPosts
+      "comments": mainPosts,
+      post: ourPost
     }
   }
 

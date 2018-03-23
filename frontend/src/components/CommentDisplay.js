@@ -4,13 +4,11 @@ import '../styles/App.css'
 import { connect } from 'react-redux'
 
 import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
-
+import { changeCommentVote, updateComment } from '../actions/comments.js'
 
 
 
 class CommentView extends React.Component {
-
-
 
 
   state = {
@@ -113,58 +111,58 @@ class CommentView extends React.Component {
 */
   // this.context.router.history.goBack()
 
-  makeBar(toggle, remove) {
-    return (
-      <span style={{
-        float: "right"
-      }}  >
-    <Button circular  size = "tiny" icon='hand point up outline'
-      onClick={ () => {
 
-      }
-      }
-      />
-       <Button circular  size = "tiny" icon='hand point down outline'
 
-      onClick={ () => {
 
-      }}
-      />
-    
-    
-    <Button circular  size = "tiny" icon='trash'
-      onClick={ () => {
-        remove(this.state.id)
-      }
-      }
-      >
-        </Button>
-       
-       <Button circular  size = "tiny" icon='pencil alternate'
+  changeVote({direction}) {
 
-      onClick={ () => {
-        toggle(this.state.id)
-      }
-      }
+    const {author, body, category, commentCount, deleted, id, parentId, timestamp, voteScore} = this.state
 
-      >
-        </Button>
-       
-    
-       </span>
-    )
+    let comment = {
+      author,
+      body,
+      category,
+      commentCount,
+      deleted,
+      id,
+      timestamp: timestamp,
+      parentId,
+      voteScore
+    }
+
+    this.props.changeCommentVote({
+      comment,
+      direction
+    })
 
   }
 
 
+  remove() {
 
+    const {author, body, category, commentCount, id, parentId, timestamp, voteScore} = this.state
+
+    let comment = {
+      author,
+      body,
+      category,
+      commentCount,
+      deleted: true,
+      id,
+      timestamp: timestamp,
+      parentId,
+      voteScore
+    }
+
+    this.props.updateComment({
+      comment
+    })
+
+  }
 
   render() {
 
-    const {toggleItem, removeItem} = this.props
-
-    const buttonBar = this.makeBar(toggleItem, removeItem)
-
+    const {toggleItem} = this.props
 
     var d = new Date(this.state.timestamp).toDateString();
 
@@ -177,7 +175,47 @@ class CommentView extends React.Component {
      <small>
      Author:<i>{this.state.author}</i>, score:{this.state.voteScore} 
      </small>
-     {buttonBar}
+     <span style={{
+        float: "right"
+      }}  >
+
+    <Button circular  size = "tiny" icon='hand point up outline'
+      onClick={ () => {
+        this.changeVote({
+          direction: true
+        })
+      }}
+      />
+       <Button circular  size = "tiny" icon='hand point down outline'
+
+      onClick={ () => {
+        this.changeVote({
+          direction: false
+        })
+      }}
+      />
+    
+    
+    <Button circular  size = "tiny" icon='trash'
+      onClick={ () => {
+        this.remove()
+      }
+      }
+      >
+        </Button>
+       
+       <Button circular  size = "tiny" icon='pencil alternate'
+
+      onClick={ () => {
+        toggleItem(this.state.id)
+      }
+      }
+
+      >
+        </Button>
+       
+    
+       </span>
    
 <div><br/>
 
@@ -192,55 +230,12 @@ class CommentView extends React.Component {
 }
 
 
-/*
-function mapStateToProps({posts}, ownProps) {
-  // console.log("this is our post id")
-  if (!(ownProps.postid)) {
-    // console.log("do not have a postid")
-    // console.log(posts)
-    return {
-      comments: []
-    }
-  }
-  //console.log(posts[ownProps.postid])
-
-
-  if (!(posts[ownProps.postid])) {
-    // console.log("do not have a posts[ownProps.postid]")
-    //console.log(posts)
-    return {
-      comments: []
-    }
-  }
-
-  const ourPost = posts[ownProps.postid]
-  //console.log("our post", ourPost)
-  const comments = ourPost.comments
-  const keys = Object.keys(comments)
-
-  //console.log("these are our comments")
-  //console.log(comments)
-
-  if (keys.length > 0) {
-    let mainPosts = Object.keys(comments).map((key) => {
-      return comments[key]
-    })
-    mainPosts.sort(sortBy('timestamp'))
-    return {
-      "comments": mainPosts
-    }
-  }
-
-  return {
-    "comments": []
-  }
-}
-
-
 function mapDispatchToProps(dispatch) {
 
   return {
-    fetchPost: (data) => dispatch(fetchPost(data))
+    changeCommentVote: (data) => dispatch(changeCommentVote(data)),
+    updateComment: (data) => dispatch(updateComment(data))
+
   }
 }
 
@@ -248,9 +243,6 @@ function mapDispatchToProps(dispatch) {
 
 
 export default connect(
-  mapStateToProps, mapDispatchToProps
-)(RootView)
+  null, mapDispatchToProps
+)(CommentView)
 
-*/
-
-export default CommentView
