@@ -8,6 +8,7 @@ import { Form, Button } from 'semantic-ui-react'
 
 import { Link } from 'react-router-dom'
 import { fetchPost } from '../actions'
+import { changeCommentVote, updateComment, addComment } from '../actions/comments.js'
 
 class CommentView extends React.Component {
 
@@ -56,16 +57,7 @@ class CommentView extends React.Component {
 
   }
 
-  handleButton = (e, {name, value}) => {
-    // this.setState({ [name]: value })
-
-    console.log("Handling button:", name, value)
-
-    this.setState({
-      category: value
-    })
-  }
-
+ 
 
   handleSubmit = () => {
     const {author, body, category, commentCount, deleted, id, parentId, timestamp, voteScore} = this.state
@@ -73,7 +65,7 @@ class CommentView extends React.Component {
     //console.log("author: "+author)
     //console.log(this.state)
 
-    let newPost = {
+    let newComment = {
       author,
       body,
       category,
@@ -84,87 +76,51 @@ class CommentView extends React.Component {
       parentId,
       voteScore
     }
-    console.log(newPost)
+    console.log(newComment)
 
   }
-
-  /*
-  this.props.updatePost({
-    post: newPost,
-    finish: (() => {
-
-      this.context.router.history.push("/category/" + category)
-    })
-  })
-
-  this.context.router.history.goBack()
 
   
 
-   
-  if (this.state.newPost===true) {
-    this.props.newPost(newPost)
-  }
-  else {
-    this.props.updatePost(newPost)
 
-  }
-//    setPost
-//    updatePost
-*/
-  // this.context.router.history.goBack()
+  save(){
+    const {author, body, category, commentCount, deleted, id, parentId, timestamp, voteScore} = this.state
+    //console.log("HANDLE SUBMIT")
+    //console.log("author: "+author)
+    //console.log(this.state)
 
-  makeBar(toggle, remove) {
-    return (
-      <span style={{
-        float: "right"
-      }}  >
-    <Button circular  size = "tiny" icon='hand point up outline'
-      onClick={ () => {
+    let newComment = {
+      author,
+      body,
+      category,
+      commentCount,
+      deleted,
+      id,
+      timestamp: new Date().getTime(),
+      parentId,
+      voteScore
+    }
+    console.log("adding",newComment, this.state)
+    if (this.state.isEdit){
+      console.log("going to update")
+    this.props.updateComment({comment:newComment, finish:()=>{
+      console.log("did save comment")
+      this.props.toggleItem(this.state.id)}})
 
-      }
-      }
-      />
-       <Button circular  size = "tiny" icon='hand point down outline'
+    } else {
+      console.log("going to add")
+      this.props.addComment({comment:newComment, finish:()=>{
+        console.log("did save comment")
+        this.props.toggleItem(this.state.id)}})
+    }
 
-      onClick={ () => {
-
-      }}
-      />
-    
-    
-    <Button circular  size = "tiny" icon='trash'
-      onClick={ () => {
-        remove(this.state.id)
-      }
-      }
-      >
-        </Button>
-       
-       <Button circular  size = "tiny" icon='pencil alternate'
-
-      onClick={ () => {
-        toggle(this.state.id)
-      }
-      }
-
-      >
-        </Button>
-       
-    
-       </span>
-    )
 
   }
-
-
 
 
   render() {
 
-    const {toggleItem, removeItem} = this.props
-
-    const buttonBar = this.makeBar(toggleItem, removeItem)
+    const {toggleItem} = this.props
 
 
     return (
@@ -178,7 +134,37 @@ class CommentView extends React.Component {
       <Form.TextArea label='Body'  name='body' value={this.state.body} onChange={this.handleChange} />
       
   
-      {buttonBar}
+      <span style={{
+        float: "right"
+      }}  >
+
+    
+    
+    <Button circular  size = "tiny" icon='save'
+      onClick={ () => {
+        this.save()
+      }
+      }
+      >
+        </Button>
+       
+       <Button circular  size = "tiny" icon='cancel'
+
+      onClick={ () => {
+        toggleItem(this.state.id)
+      }
+      }
+
+      >
+        </Button>
+       
+    
+       </span>
+   
+<div><br/>
+
+</div>
+   
       <br/><br/>
     </Form>
 
@@ -188,65 +174,22 @@ class CommentView extends React.Component {
 }
 
 
-/*
-function mapStateToProps({posts}, ownProps) {
-  // console.log("this is our post id")
-  if (!(ownProps.postid)) {
-    // console.log("do not have a postid")
-    // console.log(posts)
-    return {
-      comments: []
-    }
-  }
-  //console.log(posts[ownProps.postid])
-
-
-  if (!(posts[ownProps.postid])) {
-    // console.log("do not have a posts[ownProps.postid]")
-    //console.log(posts)
-    return {
-      comments: []
-    }
-  }
-
-  const ourPost = posts[ownProps.postid]
-  //console.log("our post", ourPost)
-  const comments = ourPost.comments
-  const keys = Object.keys(comments)
-
-  //console.log("these are our comments")
-  //console.log(comments)
-
-  if (keys.length > 0) {
-    let mainPosts = Object.keys(comments).map((key) => {
-      return comments[key]
-    })
-    mainPosts.sort(sortBy('timestamp'))
-    return {
-      "comments": mainPosts
-    }
-  }
-
-  return {
-    "comments": []
-  }
-}
-
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    fetchPost: (data) => dispatch(fetchPost(data))
+    changeCommentVote: (data) => dispatch(changeCommentVote(data)),
+    updateComment: (data) => dispatch(updateComment(data)),
+    addComment: (data) => dispatch(addComment(data))
+
   }
 }
+
 
 
 
 
 export default connect(
-  mapStateToProps, mapDispatchToProps
-)(RootView)
+  null, mapDispatchToProps
+)(CommentView)
 
-*/
-
-export default CommentView

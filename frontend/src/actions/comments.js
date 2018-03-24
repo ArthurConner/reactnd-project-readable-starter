@@ -78,7 +78,7 @@ export function addComment({comment, finish}) {
       }
 
     }).catch(function(error) {
-      console.log("we have a update posting error")
+      console.log("we have a addComment posting error")
       console.log(error);
     });
 

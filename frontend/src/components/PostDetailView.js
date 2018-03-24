@@ -12,7 +12,7 @@ import PostView from "./PostView"
 
 import CommentView from "./CommentDisplay.js"
 import CommentEditView from "./CommentEditView.js"
-
+import { Button } from 'semantic-ui-react'
 
 
 class PostDetailView extends React.Component {
@@ -28,7 +28,74 @@ class PostDetailView extends React.Component {
 
 
   state = {
-    commentStatus: {}
+    commentStatus: {},
+    isAdding:false
+
+  }
+
+  bottomItem(){
+
+    const toggleItem = (x)=> {
+      let isAdding = !(this.state.isAdding)
+      this.setState({isAdding})
+      console.log("toggled button",isAdding)
+    }
+
+    if (this.state.isAdding){
+      console.log("we are true")
+      function guid() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+      }
+
+      const nextComment= {
+        author: "",
+        category: "react",
+        body: "",
+        commentCount: 0,
+        deleted: false,
+        id: guid(),
+        parentId: this.props.postid,
+        timestamp: new Date().getTime(),
+        voteScore: 0,
+    
+      }
+
+      const isEdit = false
+      return (
+        <CommentEditView  comment={nextComment} toggleItem={toggleItem} isEdit={isEdit}/>
+      )
+    } else {
+
+    
+      console.log("we are false")
+      return (
+
+        <span style={{
+          float: "right"
+        }}  >
+  
+      
+      
+      <Button circular  size = "tiny" icon='add'
+        onClick={ () => {
+          toggleItem(0)
+        }
+        }
+        >
+          </Button>
+         
+      
+      
+         </span>
+
+      )
+    }
+
 
   }
 
@@ -67,6 +134,8 @@ class PostDetailView extends React.Component {
       console.log("did remove ", x)
     }
 
+    const botItem = this.bottomItem()
+    const isEdit = true
     return (
 
 
@@ -87,7 +156,7 @@ class PostDetailView extends React.Component {
       comments.map((comment) => {
         const status = this.state.commentStatus[comment.id]
         if (status && status === "editing") {
-          return <CommentEditView comment={comment} toggleItem={toggleItem}/>
+          return <CommentEditView comment={comment} toggleItem={toggleItem} isEdit={isEdit}/>
         }
         return (
           <CommentView comment={comment}  toggleItem={toggleItem} removeItem={removeItem}/>
@@ -96,6 +165,8 @@ class PostDetailView extends React.Component {
       )
       }      
         </ol>
+
+      {botItem}
 
 
         </div>

@@ -186,13 +186,13 @@ class PostView extends React.Component {
 </ItemDescription>
       <ItemDescription>
       <small>{d}, 
-      Author:<i>{post.author}</i>, Category:<Link
+      Author:<i>{post.author}</i>, Category:<Link
       to={catLink}
       style ={{
         color
       }}
 
-      >{catdesc}</Link>,  Comments:<Link
+      >{catdesc}</Link>,  Comments:<Link
       to={commentLink}
 
       >{post.commentCount} </Link> , score:{post.voteScore} 
