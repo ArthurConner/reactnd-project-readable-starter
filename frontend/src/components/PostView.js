@@ -17,7 +17,19 @@ function nextButton(x, postid, post, host) {
 
   if ('undefined' === typeof x) {
 
-    let commentLink = "/post/comments/" + postid
+   
+    if (!(post)) {
+      post = emptyPost()
+    }
+
+   
+    let cat = post.category
+   
+  
+    let commentLink = "/" +  cat + "/" + postid
+
+
+
 
     return (
 
@@ -149,11 +161,11 @@ class PostView extends React.Component {
       post = emptyPost()
     }
 
-    let commentLink = "/post/comments/" + postid
+   
     let cat = post.category
     let color = {}
     let catdesc = cat
-
+    let commentLink = "/" +  cat + "/" + postid
     if (this.props.categories && this.props.categories[cat]) {
       let catInfo = this.props.categories[cat]
       color = catInfo.color

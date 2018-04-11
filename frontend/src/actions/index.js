@@ -64,7 +64,7 @@ export function loadPosts() {
 
 
 
-export function fetchPost({postid}) {
+export function fetchPost({postid, finish}) {
 
   return (dispatch) => {
 
@@ -97,6 +97,11 @@ export function fetchPost({postid}) {
         }
 
         dispatch(action)
+        
+        if ('undefined' !== typeof finish) {
+          console.log("finishing the action")
+          finish()
+        }
 
       })
       .catch(function(error) {

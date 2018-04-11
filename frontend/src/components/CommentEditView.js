@@ -8,7 +8,7 @@ import { Form, Button } from 'semantic-ui-react'
 
 import { Link } from 'react-router-dom'
 import { fetchPost } from '../actions'
-import { changeCommentVote, updateComment, addComment } from '../actions/comments.js'
+import { changeCommentVote, updateComment, addComment,deleteComment } from '../actions/comments.js'
 
 class CommentView extends React.Component {
 
@@ -89,6 +89,8 @@ class CommentView extends React.Component {
     //console.log("author: "+author)
     //console.log(this.state)
 
+    const {post} = this.props
+
     let newComment = {
       author,
       body,
@@ -109,7 +111,7 @@ class CommentView extends React.Component {
 
     } else {
       console.log("going to add")
-      this.props.addComment({comment:newComment, finish:()=>{
+      this.props.addComment({comment:newComment, post, finish:()=>{
         console.log("did save comment")
         this.props.toggleItem(this.state.id)}})
     }
@@ -180,7 +182,8 @@ function mapDispatchToProps(dispatch) {
   return {
     changeCommentVote: (data) => dispatch(changeCommentVote(data)),
     updateComment: (data) => dispatch(updateComment(data)),
-    addComment: (data) => dispatch(addComment(data))
+    addComment: (data) => dispatch(addComment(data)),
+    deleteComment:(data) => dispatch(deleteComment(data))
 
   }
 }

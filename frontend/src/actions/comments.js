@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import { api, headers } from './index'
+import { api, headers , fetchPost, UPDATE_POST} from './index'
 export const UPDATE_COMMENT = 'UPDATE_COMMENT'
 
 
@@ -25,17 +25,18 @@ export function updateComment({comment, finish}) {
 
     axios(postsurl).then(function(response) {
 
+     
       const back = response.data
+      /*
       const retAction = {
         type: UPDATE_COMMENT,
         comment: back
 
       }
       dispatch(retAction)
-      if ('undefined' !== typeof finish) {
-        console.log("finishing the action")
-        finish()
-      }
+      */
+     fetchPost({postid:back.parentId,finish})
+    
 
     }).catch(function(error) {
       console.log("we have a update comment error")
@@ -46,7 +47,67 @@ export function updateComment({comment, finish}) {
 
 }
 
-export function addComment({comment, finish}) {
+
+export function deleteComment({comment, post, finish}) {
+
+  return (dispatch) => {
+
+    let data = comment
+
+
+    const postsurl = {
+      method: "put",
+      url: `${api}/comments/${comment.id}`,
+      headers: {
+        ...headers,
+      },
+      data
+    }
+
+    console.log("update comment posting", postsurl)
+
+    axios(postsurl).then(function(response) {
+
+     
+      const back = response.data
+    
+      const retAction = {
+        type: UPDATE_COMMENT,
+        comment: back
+
+      }
+      dispatch(retAction)
+     
+
+      let nextP = {
+        ...post
+      }
+  
+      let nextV = post.commentCount - 1
+      nextP.commentCount =  nextV
+
+  
+      dispatch({
+        type: UPDATE_POST,
+        post: nextP
+  
+      })
+
+
+    // fetchPost({postid:back.parentId,finish})
+    
+
+    }).catch(function(error) {
+      console.log("we have a update comment error")
+      console.log(error);
+    });
+
+  }
+
+}
+
+
+export function addComment({comment, post,finish}) {
 
   return (dispatch) => {
 
@@ -63,19 +124,32 @@ export function addComment({comment, finish}) {
     }
 
 
+    console.log("adding a comment",comment, " to post",post)
     axios(postsurl).then(function(response) {
 
       const back = response.data
+      
       const retAction = {
         type: UPDATE_COMMENT,
         comment: back
 
       }
       dispatch(retAction)
-      if ('undefined' !== typeof finish) {
-        console.log("finishing the action")
-        finish()
+     
+      let nextP = {
+        ...post
       }
+  
+      let nextV = post.commentCount + 1
+      nextP.commentCount =  nextV
+
+      
+      dispatch({
+        type: UPDATE_POST,
+        post: nextP
+  
+      })
+
 
     }).catch(function(error) {
       console.log("we have a addComment posting error")

@@ -11,7 +11,7 @@ import PostNewView from "./PostNewView"
 import { connect } from 'react-redux'
 import { loadPosts } from '../actions'
 import { withRouter } from 'react-router'
-
+import { categoryFromProps } from "./CategoryUtils"
 
 
 class BooksApp extends React.Component {
@@ -22,9 +22,18 @@ class BooksApp extends React.Component {
     this.props.loadPosts()
   }
 
+
+
   render() {
 
+    let {categories, catKeys} = this.props
 
+    
+  if ('undefined' === typeof catKeys) {
+    catKeys = ["empty"]
+  }
+
+  console.log("menuitems are: ",catKeys)
     return (
       <div>
         
@@ -32,9 +41,26 @@ class BooksApp extends React.Component {
           <Route exact path='/' render={() => (
         <MainView  />
       )}/>
-          <Route exact path='/post/comments/:id' render={({history, match}) => (
-        <PostDetailView  postid={match.params.id} />
-      )}/>
+
+{
+  catKeys.map((key) => {
+     
+      const path = "/" + key + "/:id"
+      console.log("made path for ",key,path)
+      const cKey = "dispatch_" + path
+
+      return (
+        <Route key={cKey} exact path={path} render={({history, match}) => (
+          <PostDetailView  postid={match.params.id} />
+        )}/>
+      )
+
+  })
+
+  }
+
+      
+        
 
        <Route exact path='/category/:id' render={({history, match}) => (
         <MainView  category={match.params.id} />
@@ -69,13 +95,16 @@ class BooksApp extends React.Component {
 
 
       */
-/*
 
-function mapStateToProps ({books,searchResults,query}) {
-const mainBooks = Object.keys(books).map((key)=>{ return books[key]})
-return {books:mainBooks,searchResults,query}
-}
-*/
+
+     function mapStateToProps({categories}) {
+
+      return categoryFromProps({
+        categories
+      })
+    
+    }
+
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -86,5 +115,5 @@ function mapDispatchToProps(dispatch) {
 
 
 export default withRouter(connect(
-  null, mapDispatchToProps
+  mapStateToProps, mapDispatchToProps
 )(BooksApp))

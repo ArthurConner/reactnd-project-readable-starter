@@ -4,7 +4,7 @@ import '../styles/App.css'
 import { connect } from 'react-redux'
 
 import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
-import { changeCommentVote, updateComment } from '../actions/comments.js'
+import { changeCommentVote, updateComment, deleteComment} from '../actions/comments.js'
 
 
 
@@ -141,7 +141,7 @@ class CommentView extends React.Component {
   remove() {
 
     const {author, body, category, commentCount, id, parentId, timestamp, voteScore} = this.state
-
+    const {post} = this.props
     let comment = {
       author,
       body,
@@ -154,8 +154,9 @@ class CommentView extends React.Component {
       voteScore
     }
 
-    this.props.updateComment({
-      comment
+    this.props.deleteComment({
+      comment,
+      post
     })
 
   }
@@ -234,7 +235,8 @@ function mapDispatchToProps(dispatch) {
 
   return {
     changeCommentVote: (data) => dispatch(changeCommentVote(data)),
-    updateComment: (data) => dispatch(updateComment(data))
+    updateComment: (data) => dispatch(updateComment(data)),
+    deleteComment: (data) =>dispatch(deleteComment(data))
 
   }
 }

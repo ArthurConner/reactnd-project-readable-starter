@@ -12,7 +12,7 @@ import PostView from "./PostView"
 
 import CommentView from "./CommentDisplay.js"
 import CommentEditView from "./CommentEditView.js"
-import { Button } from 'semantic-ui-react'
+import { Button,Header } from 'semantic-ui-react'
 
 
 class PostDetailView extends React.Component {
@@ -41,6 +41,8 @@ class PostDetailView extends React.Component {
       console.log("toggled button",isAdding)
     }
 
+    const {post} = this.props;
+
     if (this.state.isAdding){
       console.log("we are true")
       function guid() {
@@ -67,7 +69,7 @@ class PostDetailView extends React.Component {
 
       const isEdit = false
       return (
-        <CommentEditView  comment={nextComment} toggleItem={toggleItem} isEdit={isEdit}/>
+        <CommentEditView  comment={nextComment} post={post} toggleItem={toggleItem} isEdit={isEdit}/>
       )
     } else {
 
@@ -105,8 +107,9 @@ class PostDetailView extends React.Component {
       return !(post.deleted)
     })
 
-    const {postid, post} = this.props;
+    const {postid,post} = this.props;
 
+  
 
 
     const toggleItem = (x) => {
@@ -136,6 +139,30 @@ class PostDetailView extends React.Component {
 
     const botItem = this.bottomItem()
     const isEdit = true
+
+    console.log("at post",this.props)
+
+    
+    if (('undefined' === typeof post)|| ('undefined' === typeof post.deleted) || (post.deleted) ) {
+      return (
+
+        <div key = "pod{key}">
+      
+        <MenuView/>
+        <div style = {{
+          marginTop: "10px",
+          marginLeft: "10px",
+          marginRight: "10px",
+          backgroundColor: "white"
+        }}>
+        <Header>Can't seem to find the post you are looking for.</Header>
+
+        </div>
+        </div>
+      )
+    }
+
+    
     return (
 
 
@@ -156,10 +183,10 @@ class PostDetailView extends React.Component {
       comments.map((comment) => {
         const status = this.state.commentStatus[comment.id]
         if (status && status === "editing") {
-          return <CommentEditView comment={comment} toggleItem={toggleItem} isEdit={isEdit}/>
+          return <CommentEditView comment={comment} post={post} toggleItem={toggleItem} isEdit={isEdit}/>
         }
         return (
-          <CommentView comment={comment}  toggleItem={toggleItem} removeItem={removeItem}/>
+          <CommentView comment={comment} post={post} toggleItem={toggleItem} removeItem={removeItem}/>
         )
       }
       )
@@ -227,7 +254,8 @@ function mapStateToProps({posts}, ownProps) {
   }
 
   return {
-    "comments": []
+    "comments": [],
+    post: ourPost
   }
 }
 
