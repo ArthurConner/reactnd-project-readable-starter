@@ -6,9 +6,7 @@ import { connect } from 'react-redux'
 import { Form, Button } from 'semantic-ui-react'
 
 
-import { Link } from 'react-router-dom'
-import { fetchPost } from '../actions'
-import { changeCommentVote, updateComment, addComment,deleteComment } from '../actions/comments.js'
+import { changeCommentVote, updateComment, addComment, deleteComment } from '../actions/comments.js'
 
 class CommentView extends React.Component {
 
@@ -57,10 +55,10 @@ class CommentView extends React.Component {
 
   }
 
- 
+
 
   handleSubmit = () => {
-    const {author, body, category, commentCount, deleted, id, parentId, timestamp, voteScore} = this.state
+    const {author, body, category, commentCount, deleted, id, parentId, voteScore} = this.state
     //console.log("HANDLE SUBMIT")
     //console.log("author: "+author)
     //console.log(this.state)
@@ -80,11 +78,11 @@ class CommentView extends React.Component {
 
   }
 
-  
 
 
-  save(){
-    const {author, body, category, commentCount, deleted, id, parentId, timestamp, voteScore} = this.state
+
+  save() {
+    const {author, body, category, commentCount, deleted, id, parentId, voteScore} = this.state
     //console.log("HANDLE SUBMIT")
     //console.log("author: "+author)
     //console.log(this.state)
@@ -102,18 +100,27 @@ class CommentView extends React.Component {
       parentId,
       voteScore
     }
-    console.log("adding",newComment, this.state)
-    if (this.state.isEdit){
+    console.log("adding", newComment, this.state)
+    if (this.state.isEdit) {
       console.log("going to update")
-    this.props.updateComment({comment:newComment, finish:()=>{
-      console.log("did save comment")
-      this.props.toggleItem(this.state.id)}})
+      this.props.updateComment({
+        comment: newComment,
+        finish: () => {
+          console.log("did save comment")
+          this.props.toggleItem(this.state.id)
+        }
+      })
 
     } else {
-      console.log("going to add")
-      this.props.addComment({comment:newComment, post, finish:()=>{
-        console.log("did save comment")
-        this.props.toggleItem(this.state.id)}})
+      console.log("going to add to", newComment, "to", post)
+      this.props.addComment({
+        comment: newComment,
+        post,
+        finish: () => {
+          console.log("did save comment")
+          this.props.toggleItem(this.state.id)
+        }
+      })
     }
 
 
@@ -183,7 +190,7 @@ function mapDispatchToProps(dispatch) {
     changeCommentVote: (data) => dispatch(changeCommentVote(data)),
     updateComment: (data) => dispatch(updateComment(data)),
     addComment: (data) => dispatch(addComment(data)),
-    deleteComment:(data) => dispatch(deleteComment(data))
+    deleteComment: (data) => dispatch(deleteComment(data))
 
   }
 }

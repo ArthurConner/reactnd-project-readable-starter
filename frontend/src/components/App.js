@@ -26,14 +26,14 @@ class BooksApp extends React.Component {
 
   render() {
 
-    let {categories, catKeys} = this.props
+    let {catKeys} = this.props
 
-    
-  if ('undefined' === typeof catKeys) {
-    catKeys = ["empty"]
-  }
 
-  console.log("menuitems are: ",catKeys)
+    if ('undefined' === typeof catKeys) {
+      catKeys = ["empty"]
+    }
+
+    //console.log("menuitems are: ", catKeys)
     return (
       <div>
         
@@ -43,21 +43,21 @@ class BooksApp extends React.Component {
       )}/>
 
 {
-  catKeys.map((key) => {
-     
-      const path = "/" + key + "/:id"
-      console.log("made path for ",key,path)
-      const cKey = "dispatch_" + path
+      catKeys.map((key) => {
 
-      return (
-        <Route key={cKey} exact path={path} render={({history, match}) => (
-          <PostDetailView  postid={match.params.id} />
-        )}/>
-      )
+        const path = "/" + key + "/:id"
+        //console.log("made path for ", key, path)
+        const cKey = "dispatch_" + path
 
-  })
+        return (
+          <Route key={cKey} exact path={path} render={({history, match}) => (
+            <PostDetailView  postid={match.params.id} />
+          )}/>
+        )
 
-  }
+      })
+
+      }
 
       
         
@@ -97,13 +97,13 @@ class BooksApp extends React.Component {
       */
 
 
-     function mapStateToProps({categories}) {
+function mapStateToProps({categories}) {
 
-      return categoryFromProps({
-        categories
-      })
-    
-    }
+  return categoryFromProps({
+    categories
+  })
+
+}
 
 
 function mapDispatchToProps(dispatch) {

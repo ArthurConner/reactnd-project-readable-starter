@@ -10,17 +10,6 @@ import { addPost } from '../actions'
 import MenuView from "./Menu.js"
 
 
-
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-}
-
-
 class PostNewView extends React.Component {
 
   state = emptyPost()
@@ -39,7 +28,7 @@ class PostNewView extends React.Component {
 
 
   handleChange = (e, {name, value}) => {
-    console.log("Changing form", name, value)
+    //console.log("Changing form", name, value)
     this.setState({
       [name]: value
     })
@@ -48,7 +37,6 @@ class PostNewView extends React.Component {
 
   handleButton = (e, {name, value}) => {
     // this.setState({ [name]: value })
-
     // console.log("Handling button:", name, value)
 
     this.setState({
@@ -121,9 +109,11 @@ class PostNewView extends React.Component {
 
           {catKeys.map((key) => {
         const cat = categories[key]
+        const formkey = "radio_group_" + key
         return <Form.Radio
           label={cat.desc}
           value={key}
+          key = {formkey}
           checked={this.state.category === key}
           onChange={this.handleButton}  />
 
@@ -135,7 +125,7 @@ class PostNewView extends React.Component {
         <span style={{
         float: "right"
       }}  >
-        <Form.Button content='Submit'>Save</Form.Button>
+        <Form.Button  content='Submit'>Save</Form.Button>
         </span>
         </div>
         <br/><br/>

@@ -167,6 +167,7 @@ function reditReducer(state = initialRedState, action) {
         "categories": nextCategories
 
       }
+      break;
 
     case UPDATE_POST:
       const {comments, post} = action
@@ -187,6 +188,7 @@ function reditReducer(state = initialRedState, action) {
 
       }
 
+      break;
     case UPDATE_COMMENT:
 
       const {comment} = action
@@ -200,9 +202,8 @@ function reditReducer(state = initialRedState, action) {
           nextP.comments[comment.id] = comment
         } else {
           const key = comment.id
-          nextP.comments = {
-            key: comment
-          }
+          nextP.comments = {  }
+          nextP.comments[key] = comment
         }
 
         let retPosts = {
@@ -217,6 +218,7 @@ function reditReducer(state = initialRedState, action) {
         }
 
       }
+      break;
 
     default:
       return state

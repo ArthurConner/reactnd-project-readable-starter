@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import { api, headers , fetchPost, UPDATE_POST} from './index'
+import { api, headers, fetchPost, UPDATE_POST } from './index'
 export const UPDATE_COMMENT = 'UPDATE_COMMENT'
 
 
@@ -25,7 +25,7 @@ export function updateComment({comment, finish}) {
 
     axios(postsurl).then(function(response) {
 
-     
+
       const back = response.data
       /*
       const retAction = {
@@ -35,8 +35,11 @@ export function updateComment({comment, finish}) {
       }
       dispatch(retAction)
       */
-     fetchPost({postid:back.parentId,finish})
-    
+      fetchPost({
+        postid: back.parentId,
+        finish
+      })
+
 
     }).catch(function(error) {
       console.log("we have a update comment error")
@@ -68,34 +71,34 @@ export function deleteComment({comment, post, finish}) {
 
     axios(postsurl).then(function(response) {
 
-     
+
       const back = response.data
-    
+
       const retAction = {
         type: UPDATE_COMMENT,
         comment: back
 
       }
       dispatch(retAction)
-     
+
 
       let nextP = {
         ...post
       }
-  
-      let nextV = post.commentCount - 1
-      nextP.commentCount =  nextV
 
-  
+      let nextV = post.commentCount - 1
+      nextP.commentCount = nextV
+
+
       dispatch({
         type: UPDATE_POST,
         post: nextP
-  
+
       })
 
 
-    // fetchPost({postid:back.parentId,finish})
-    
+      // fetchPost({postid:back.parentId,finish})
+
 
     }).catch(function(error) {
       console.log("we have a update comment error")
@@ -107,7 +110,7 @@ export function deleteComment({comment, post, finish}) {
 }
 
 
-export function addComment({comment, post,finish}) {
+export function addComment({comment, post, finish}) {
 
   return (dispatch) => {
 
@@ -124,30 +127,30 @@ export function addComment({comment, post,finish}) {
     }
 
 
-    console.log("adding a comment",comment, " to post",post)
+    console.log("adding a comment", comment, " to post", post)
     axios(postsurl).then(function(response) {
 
       const back = response.data
-      
+
       const retAction = {
         type: UPDATE_COMMENT,
         comment: back
 
       }
       dispatch(retAction)
-     
+
       let nextP = {
         ...post
       }
-  
-      let nextV = post.commentCount + 1
-      nextP.commentCount =  nextV
 
-      
+      let nextV = post.commentCount + 1
+      nextP.commentCount = nextV
+
+
       dispatch({
         type: UPDATE_POST,
         post: nextP
-  
+
       })
 
 

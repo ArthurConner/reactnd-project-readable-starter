@@ -3,8 +3,8 @@ import React from 'react'
 import '../styles/App.css'
 import { connect } from 'react-redux'
 
-import { Item, Header, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
-import { changeCommentVote, updateComment, deleteComment} from '../actions/comments.js'
+import { Item, ItemContent, ItemDescription, Button } from 'semantic-ui-react'
+import { changeCommentVote, updateComment, deleteComment } from '../actions/comments.js'
 
 
 
@@ -65,7 +65,7 @@ class CommentView extends React.Component {
 
 
   handleSubmit = () => {
-    const {author, body, category, commentCount, deleted, id, parentId, timestamp, voteScore} = this.state
+    const {author, body, category, commentCount, deleted, id, parentId, voteScore} = this.state
     //console.log("HANDLE SUBMIT")
     //console.log("author: "+author)
     //console.log(this.state)
@@ -236,7 +236,7 @@ function mapDispatchToProps(dispatch) {
   return {
     changeCommentVote: (data) => dispatch(changeCommentVote(data)),
     updateComment: (data) => dispatch(updateComment(data)),
-    deleteComment: (data) =>dispatch(deleteComment(data))
+    deleteComment: (data) => dispatch(deleteComment(data))
 
   }
 }

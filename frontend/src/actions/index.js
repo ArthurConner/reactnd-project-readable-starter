@@ -97,7 +97,7 @@ export function fetchPost({postid, finish}) {
         }
 
         dispatch(action)
-        
+
         if ('undefined' !== typeof finish) {
           console.log("finishing the action")
           finish()
@@ -169,7 +169,7 @@ export function addPost({post, finish}) {
       data
     }
 
-    console.log("update post posting", postsurl)
+    //console.log("update post posting", postsurl)
 
     axios(postsurl).then(function(response) {
 
@@ -181,7 +181,7 @@ export function addPost({post, finish}) {
       }
       dispatch(retAction)
       if ('undefined' !== typeof finish) {
-        console.log("finishing the action")
+        // console.log("finishing the action")
         finish()
       }
 

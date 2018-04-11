@@ -17,16 +17,16 @@ function nextButton(x, postid, post, host) {
 
   if ('undefined' === typeof x) {
 
-   
+
     if (!(post)) {
       post = emptyPost()
     }
 
-   
+
     let cat = post.category
-   
-  
-    let commentLink = "/" +  cat + "/" + postid
+
+
+    let commentLink = "/" + cat + "/" + postid
 
 
 
@@ -153,7 +153,7 @@ class PostView extends React.Component {
 
 
     let {postid, post} = this.props
-    console.log("In postView with ", post)
+    //console.log("In postView with ", post)
 
     const isSummary = this.props.isSummary
 
@@ -161,11 +161,11 @@ class PostView extends React.Component {
       post = emptyPost()
     }
 
-   
+
     let cat = post.category
     let color = {}
     let catdesc = cat
-    let commentLink = "/" +  cat + "/" + postid
+    let commentLink = "/" + cat + "/" + postid
     if (this.props.categories && this.props.categories[cat]) {
       let catInfo = this.props.categories[cat]
       color = catInfo.color

@@ -12,7 +12,7 @@ import PostView from "./PostView"
 
 import CommentView from "./CommentDisplay.js"
 import CommentEditView from "./CommentEditView.js"
-import { Button,Header } from 'semantic-ui-react'
+import { Button, Header } from 'semantic-ui-react'
 
 
 class PostDetailView extends React.Component {
@@ -29,21 +29,23 @@ class PostDetailView extends React.Component {
 
   state = {
     commentStatus: {},
-    isAdding:false
+    isAdding: false
 
   }
 
-  bottomItem(){
+  bottomItem() {
 
-    const toggleItem = (x)=> {
+    const toggleItem = (x) => {
       let isAdding = !(this.state.isAdding)
-      this.setState({isAdding})
-      console.log("toggled button",isAdding)
+      this.setState({
+        isAdding
+      })
+      console.log("toggled button", isAdding)
     }
 
     const {post} = this.props;
 
-    if (this.state.isAdding){
+    if (this.state.isAdding) {
       console.log("we are true")
       function guid() {
         function s4() {
@@ -54,7 +56,7 @@ class PostDetailView extends React.Component {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
       }
 
-      const nextComment= {
+      const nextComment = {
         author: "",
         category: "react",
         body: "",
@@ -64,7 +66,7 @@ class PostDetailView extends React.Component {
         parentId: this.props.postid,
         timestamp: new Date().getTime(),
         voteScore: 0,
-    
+
       }
 
       const isEdit = false
@@ -73,8 +75,8 @@ class PostDetailView extends React.Component {
       )
     } else {
 
-    
-      console.log("we are false")
+
+      // console.log("we are false")
       return (
 
         <span style={{
@@ -107,9 +109,9 @@ class PostDetailView extends React.Component {
       return !(post.deleted)
     })
 
-    const {postid,post} = this.props;
+    const {postid, post} = this.props;
 
-  
+
 
 
     const toggleItem = (x) => {
@@ -133,17 +135,14 @@ class PostDetailView extends React.Component {
       console.log("did remove ", x)
     }
 
-    const saveItem = (x) => {
-      console.log("did remove ", x)
-    }
 
     const botItem = this.bottomItem()
     const isEdit = true
 
-    console.log("at post",this.props)
+    //console.log("at post", this.props)
 
-    
-    if (('undefined' === typeof post)|| ('undefined' === typeof post.deleted) || (post.deleted) ) {
+
+    if (('undefined' === typeof post) || ('undefined' === typeof post.deleted) || (post.deleted)) {
       return (
 
         <div key = "pod{key}">
@@ -162,7 +161,7 @@ class PostDetailView extends React.Component {
       )
     }
 
-    
+
     return (
 
 
