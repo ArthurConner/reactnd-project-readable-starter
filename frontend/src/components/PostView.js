@@ -59,6 +59,14 @@ function nextButton(x, postid, post, host) {
 
       />
    
+   <Button circular  size = "tiny" icon='trash'
+      onClick={ () => {
+        host.remove()
+      }
+      }
+      >
+    </Button>
+
    <Link
       to={commentLink}>
      <Button circular  size = "tiny" icon='folder open outline' >
@@ -142,8 +150,8 @@ class PostView extends React.Component {
 
 
     this.props.updatePost({
-      post,
-      finish: this.context.router.history.goBack
+      post
+    // finish: this.context.router.history.goBack
     })
 
 
